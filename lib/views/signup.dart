@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techbox/components/input.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
