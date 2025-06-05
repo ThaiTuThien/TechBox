@@ -7,9 +7,11 @@ environment:
   sdk: ^3.7.2
 
 dependencies:
+  another_flutter_splash_screen: ^1.2.1
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -18,3 +20,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets: 
+  - assets/lotties/
+  - assets/image/
+
+flutter_native_splash: 
+  color: "#FFFFFF"
+  image: assets/image/windy.png
+  android: true
+  ios: true
+  web: false
+

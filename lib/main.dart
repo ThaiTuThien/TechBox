@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techbox/widgets/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,12 +11,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: true,
-      home: Scaffold(
-        body: Center( 
-          child: Text('Hello World!'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen()
     );
   }
 }
