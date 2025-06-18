@@ -1,5 +1,5 @@
 name: techbox
-description: "A new Flutter project."
+description: "E-Commerce App"
 publish_to: 'none'
 version: 0.1.0
 
@@ -11,7 +11,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.6
+  google_fonts: ^6.2.1
   lottie: ^3.3.1
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -25,10 +28,18 @@ flutter:
   - assets/lotties/
   - assets/image/
 
-flutter_native_splash: 
-  color: "#FFFFFF"
-  image: assets/image/windy.png
-  android: true
-  ios: true
-  web: false
-
+fonts: 
+  - family: Inter
+    fonts: 
+      - asset: assets/fonts/Inter_18pt-Regular.ttf
+      - asset: assets/fonts/Inter_18pt-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/Inter_18pt-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/Inter_18pt-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/Inter_18pt-Italic.ttf
+        style: italic
+      
+      
+      

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class InputComponent extends StatelessWidget {
   final String label;
   final String hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool obscureText;
   final String? errorText;
   final bool isSuccess;
@@ -13,7 +13,7 @@ class InputComponent extends StatelessWidget {
     super.key,
     required this.label,
     required this.hintText,
-    required this.controller,
+    this.controller,
     this.obscureText = false,
     this.errorText,
     this.isSuccess = false,
@@ -42,6 +42,7 @@ class InputComponent extends StatelessWidget {
               keyboardType: keyboardType,
               decoration: InputDecoration(
                 hintText: hintText,
+                hintStyle: TextStyle(fontSize: 16, color: Color.fromRGBO(0, 0, 0, 0.6)),
                 contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8)
