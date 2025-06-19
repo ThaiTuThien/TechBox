@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ConstantText {
   static TextStyle titleText = TextStyle(
@@ -8,7 +7,7 @@ class ConstantText {
     fontWeight: FontWeight.w600,
     letterSpacing: -0.5,
     height: 1,
-    color: Color(0xFF1A1A1A)
+    color: ConstantsColor.colorMain
   );
   static TextStyle descriptionText = TextStyle(
     fontSize: 16,
@@ -17,4 +16,8 @@ class ConstantText {
     height: 1.4,
     color: Color.fromRGBO(0, 0, 0, 0.6)
   );
+}
+
+class ConstantsColor {
+  static Color colorMain = Color(0xFF3C595D);
 }
