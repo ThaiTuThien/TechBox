@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text('Đăng nhập tài khoản', style: ConstantText.titleText),
                 SizedBox(height: 8),
                 Text('Thật tuyệt khi được gặp lại bạn.', style: ConstantText.descriptionText),
-                SizedBox(height: 20),
+                SizedBox(height: 16),
                 InputComponent(label: 'Email', hint: 'Nhập email của bạn', controller: nameController),
                 SizedBox(height: 16),
                 InputComponent(label: 'Mật khẩu', hint: 'Nhập mật khẩu của bạn', controller: passwordController, obscureText: true),

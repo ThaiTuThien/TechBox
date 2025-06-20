@@ -46,7 +46,7 @@ class _ButtonComponentState extends State<ButtonComponent> {
             ),
             SizedBox(width: 10),
             Text(
-              'Loading...',
+              'Đang tải...',
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ] else ...[
