@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
-  const AppBarCart({Key? key}) : super(key: key);
+  final String title;
+
+  const AppBarCart({Key? key, this.title = 'Giỏ hàng'}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -12,8 +14,9 @@ class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Giỏ hàng',
-          style: TextStyle(
+        title: Text(
+          title,
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 24,
             fontWeight: FontWeight.bold,
