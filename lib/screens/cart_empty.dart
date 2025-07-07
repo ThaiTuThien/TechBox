@@ -24,7 +24,7 @@ class CartEmpty extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: const Color.fromARGB(255, 26, 26, 26),
                 ),
               ),
               SizedBox(height: 10),
@@ -32,7 +32,7 @@ class CartEmpty extends StatelessWidget {
                 'Hãy thêm sản phẩm vào giỏ hàng',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Color.fromARGB(128, 128, 128, 128),
+                  color: Color.fromARGB(255, 128, 128, 128),
                 ),
               ),
             ],

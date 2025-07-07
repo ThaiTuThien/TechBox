@@ -47,7 +47,7 @@ class SuccessNotification extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -56,20 +56,20 @@ class SuccessNotification extends StatelessWidget {
 
             // Green checkmark icon - exact match
             Container(
-              width: 50,
-              height: 50,
+              width: 63.38,
+              height: 63.38,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 205, 248, 206),
+                color: const Color.fromARGB(51, 12, 148, 9),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color(0xFF4CAF50),
+                  color: const Color.fromARGB(255, 12, 148, 9),
                   width: 4,
                 ),
               ),
               child: const Icon(
                 Icons.check,
-                color: Color(0xFF4CAF50),
-                size: 30,
+                color: const Color.fromARGB(255, 12, 148, 9),
+                size: 45,
               ),
             ),
 
@@ -93,8 +93,9 @@ class SuccessNotification extends StatelessWidget {
               subtitleText,
               style: const TextStyle(
                 fontSize: 16,
-                color: Color.fromARGB(128, 128, 128, 128),
+                color: Color.fromARGB(255, 128, 128, 128),
                 fontFamily: 'Inter',
+                fontWeight: FontWeight.w400
               ),
               textAlign: TextAlign.center,
             ),

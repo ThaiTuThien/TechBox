@@ -17,7 +17,7 @@ class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
         title: Text(
           title,
           style: const TextStyle(
-            color: Colors.black,
+            color: Color.fromARGB(255, 26, 26, 26),
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -44,7 +44,7 @@ class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
           preferredSize: const Size.fromHeight(1.0),
           child: Container(
             height: 1.0,
-            color: const Color.fromARGB(230, 230, 230, 230),
+            color: const Color.fromARGB(255, 230, 230, 230),
           ),
         ),
       ),
