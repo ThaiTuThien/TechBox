@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:techbox/components/app_bar.dart';
 import 'package:techbox/core/constants.dart';
 
+
 class AddressEmpty extends StatelessWidget {
   const AddressEmpty({super.key});
 
@@ -24,7 +25,7 @@ class AddressEmpty extends StatelessWidget {
                 'Không có địa chỉ nào được lưu',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Color.fromARGB(128, 128, 128, 100),
+                  color: Color.fromARGB(255, 128, 128, 128),
                   fontWeight: FontWeight.bold
                 ),
               ),
@@ -33,7 +34,7 @@ class AddressEmpty extends StatelessWidget {
                 'Vui lòng thêm địa chỉ mới',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Color.fromARGB(128, 128, 128, 100),
+                  color: Color.fromARGB(255, 128, 128, 128),
                   fontWeight: FontWeight.bold
                 ),
               ),
