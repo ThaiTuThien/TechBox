@@ -93,7 +93,7 @@ class DashedAddAddressButton extends StatelessWidget {
                 style: TextStyle(
                   color: ConstantsColor.colorMain,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   fontFamily: 'Inter',
                 ),
               ),

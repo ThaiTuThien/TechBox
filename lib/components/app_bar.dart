@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
+class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const AppBarCart({Key? key, this.title = 'Giỏ hàng'}) : super(key: key);
+  const AppBarComponent({Key? key, this.title = 'Giỏ hàng'}) : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -23,12 +23,12 @@ class AppBarCart extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 24,),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black, size: 24,),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
         actions: [
           IconButton(
             icon: Image.asset(

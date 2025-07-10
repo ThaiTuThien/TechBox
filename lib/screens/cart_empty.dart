@@ -8,7 +8,7 @@ class CartEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarCart(),
+      appBar: AppBarComponent(),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
