@@ -11,7 +11,7 @@ class AddressEmpty extends StatelessWidget {
   Widget build(BuildContext context) {
      return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarCart(title: 'Địa chỉ nhận hàng',),
+      appBar: AppBarComponent(title: 'Địa chỉ nhận hàng',),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
