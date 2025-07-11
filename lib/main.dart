@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:techbox/screens/add_address.dart';
-import 'package:techbox/screens/address_empty.dart';
 import 'package:techbox/widgets/splash_screen.dart';
 
 void main() {
@@ -15,7 +13,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
-      home: AddAddress(),
+      home: SplashScreen(),
     );
   }
 }
