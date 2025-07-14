@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/components/bottom_navigation.dart';
+import 'package:techbox/screens/account.dart';
 import 'package:techbox/screens/address/address_empty.dart';
 import 'package:techbox/screens/cart/cart_empty.dart';
 import 'package:techbox/screens/favorite_screen.dart';
@@ -21,8 +22,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     HomeScreen(),
     CartEmpty(),
     FavoriteScreen(),
-    AddressEmpty()
-    // const ProfilePage(),
+    AddressEmpty(),
+    AccountPage()
   ];
 
   @override
