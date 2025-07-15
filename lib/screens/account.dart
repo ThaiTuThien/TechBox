@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:techbox/components/app_bar.dart';
+import 'package:techbox/components/bottom_navigation.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -49,31 +51,9 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Tài Khoản',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-        ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Image.asset('assets/image/back.png'),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: Image.asset(
-              'assets/image/bell.png',
-              width: 28,
-              height: 28,
-              color: Colors.black,
-            ),
-          ),
-        ],
-      ),
+      // Sử dụng AppBarComponent thay vì AppBar mặc định
+      appBar: const AppBarComponent(title: 'Tài Khoản'),
+
       body: ListView.separated(
         itemCount: menuItems.length + 1,
         separatorBuilder:
@@ -93,7 +73,6 @@ class AccountPage extends StatelessWidget {
                 width: 26,
                 height: 26,
                 fit: BoxFit.contain,
-                // color: Color(item['color']), // Nếu icon là PNG trắng đen thì uncomment để đổi màu
               ),
               title: Text(
                 item['title'],
@@ -137,24 +116,14 @@ class AccountPage extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 4,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.black45,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite_border), label: ''),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: '',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
-        ],
+
+      // Sử dụng BottomNavigation custom thay vì BottomNavigationBar mặc định
+      bottomNavigationBar: BottomNavigation(
+        selectedIndex: 4,
+        onTabChange: (int index) {
+          // TODO: Xử lý chuyển trang khi nhấn bottom nav (tuỳ router bạn dùng)
+          // Ví dụ: Navigator.pushNamed(context, routeName);
+        },
       ),
     );
   }
