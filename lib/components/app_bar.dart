@@ -2,16 +2,25 @@ import 'package:flutter/material.dart';
 
 class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final bool showBackButton;
+  final bool showBottomBorder;
 
-  const AppBarComponent({Key? key, this.title = 'Giỏ hàng'}) : super(key: key);
+  const AppBarComponent({
+    Key? key,
+    this.title = 'Giỏ hàng',
+    this.showBackButton = true,
+    this.showBottomBorder = true,
+  }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(
+        showBottomBorder ? kToolbarHeight + 1.0 : kToolbarHeight,
+      );
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -23,12 +32,18 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
         centerTitle: true,
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back, color: Colors.black, size: 24,),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
+        leading: showBackButton
+            ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                  size: 24,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            : null,
         actions: [
           IconButton(
             icon: Image.asset(
@@ -36,17 +51,18 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
               width: 18.75,
               height: 20.25,
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.0),
-          child: Container(
-            height: 1.0,
-            color: const Color.fromARGB(255, 230, 230, 230),
-          ),
-        ),
+        bottom: showBottomBorder
+            ? PreferredSize(
+                preferredSize: const Size.fromHeight(1.0),
+                child: Container(
+                  height: 1.0,
+                  color: const Color.fromARGB(255, 230, 230, 230),
+                ),
+              )
+            : null,
       ),
     );
   }

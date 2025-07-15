@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:techbox/components/app_bar.dart';
 import 'package:techbox/core/constants.dart';
 
-class AddAddressPage extends StatefulWidget {
-  const AddAddressPage({Key? key}) : super(key: key);
+class UpdateAddressPage extends StatefulWidget {
+  const UpdateAddressPage({Key? key}) : super(key: key);
 
   @override
-  State<AddAddressPage> createState() => _AddAddressPageState();
+  State<UpdateAddressPage> createState() => _UpdateAddressPageState();
 }
 
-class _AddAddressPageState extends State<AddAddressPage> {
+class _UpdateAddressPageState extends State<UpdateAddressPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -56,7 +56,7 @@ class _AddAddressPageState extends State<AddAddressPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBarComponent(title: 'Thêm địa chỉ', showBottomBorder: false,),
+      appBar: AppBarComponent(title: 'Cập nhật địa chỉ', showBottomBorder: false,),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -219,23 +219,61 @@ class _AddAddressPageState extends State<AddAddressPage> {
           child: SizedBox(
             width: 358,
             height: 54,
-            child: ElevatedButton(
-              onPressed: _addAddress,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ConstantsColor.colorMain,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 170,
+                    height: 54,
+                    child: OutlinedButton(
+                      onPressed: (){},
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: ConstantsColor.colorMain,
+                          width: 1,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        'Hủy',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          color: ConstantsColor.colorMain,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: const Text(
-                'Thêm địa chỉ',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Inter',
-                  color: Colors.white,
+                SizedBox(width: 18),
+                Expanded(
+                  child: Container(
+                    width: 170,
+                    height: 54,
+                    child: ElevatedButton(
+                      onPressed: _addAddress,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ConstantsColor.colorMain,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Thêm địa chỉ',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Inter',
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
