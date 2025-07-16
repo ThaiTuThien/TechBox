@@ -116,15 +116,6 @@ class AccountPage extends StatelessWidget {
           }
         },
       ),
-
-      // Sử dụng BottomNavigation custom thay vì BottomNavigationBar mặc định
-      bottomNavigationBar: BottomNavigation(
-        selectedIndex: 4,
-        onTabChange: (int index) {
-          // TODO: Xử lý chuyển trang khi nhấn bottom nav (tuỳ router bạn dùng)
-          // Ví dụ: Navigator.pushNamed(context, routeName);
-        },
-      ),
     );
   }
 }
