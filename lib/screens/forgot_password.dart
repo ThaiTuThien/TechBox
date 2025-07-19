@@ -1,39 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:techbox/components/button.dart';
 import 'package:techbox/components/input.dart';
 import 'package:techbox/core/constants.dart';
 
-class ForgotPassword extends StatelessWidget {
+class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
   @override
+  State<ForgotPassword> createState() => _ForgotPasswordState();
+}
+
+class _ForgotPasswordState extends State<ForgotPassword> {
+  final emailController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Khôi phục mật khẩu', style: ConstantText.titleText),
-                SizedBox(height: 8),
-                Text('Nhập email của bạn để khôi phục mật khẩu.', style: ConstantText.descriptionText),
-                SizedBox(height: 16),
-                InputComponent(
-                  label: 'Email',
-                  hint: 'Nhập email của bạn',
-                  controller: TextEditingController(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 99),
+            _textHeader(),
+            SizedBox(height: 8),
+            _textSubHeader('Nhập email của bạn để tiến hành xác thực'),
+            _textSubHeader('Chúng tôi sẽ gửi mã 6 số về email của bạn'),
+            SizedBox(height: 23),
+            _emailInput(),
+          ]
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: SizedBox(
+            width: 341,
+            height: 54,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: ConstantsColor.colorMain,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                SizedBox(height: 24),
-                ButtonComponent(
-                  text: 'Gửi mã'
+              ),
+              onPressed: () {},
+              child: Text(
+                'Gửi mã',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'Inter',
                 ),
-              ],
+              ),
             ),
           ),
         ),
       )
     );
+  }
+
+  Widget _textHeader() {
+    return Text('Quên mật khẩu',
+      style: TextStyle(
+        fontSize: 32,
+        fontFamily: 'Inter',
+        fontWeight: FontWeight.bold,
+        color: ConstantsColor.colorMain,
+      ),
+    );
+  }
+
+  Widget _textSubHeader(
+    String title,
+  ){
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        fontFamily: 'Inter',
+        color: const Color.fromARGB(255, 128, 128, 128),
+      ),
+    );
+  }
+
+  Widget _emailInput(){
+    return 
+      InputComponent(label: 'Email', hint: 'Nhập email của bạn', controller: emailController);
   }
 }
