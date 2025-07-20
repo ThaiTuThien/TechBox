@@ -4,7 +4,7 @@ import 'package:techbox/src/features/account/presentation/account_list/account.d
 import 'package:techbox/src/features/address/presentation/update_address/update_address.dart';
 import 'package:techbox/src/features/cart/presentation/empty_cart/cart_empty.dart';
 import 'package:techbox/src/features/wishlist/presentation/favorite_screen.dart';
-import 'package:techbox/src/features/home/presentation/home_screen.dart';
+import 'package:techbox/src/features/product/presentation/home_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({Key? key}) : super(key: key);
