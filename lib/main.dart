@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techbox/widgets/splash_screen.dart';
+import 'package:techbox/src/common_widgets/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
