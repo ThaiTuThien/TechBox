@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:techbox/src/common_widgets/onboarding/onboard_screen_1.dart';
+import 'package:techbox/src/common_widgets/onboarding/onboard_screen_2.dart';
+import 'package:techbox/src/common_widgets/onboarding/onboard_screen_3.dart';
 import 'package:techbox/src/features/auth/login/presentation/login.dart';
-import 'package:techbox/src/features/onboarding/presentation/onboard_screen_1.dart';
-import 'package:techbox/src/features/onboarding/presentation/onboard_screen_2.dart';
-import 'package:techbox/src/features/onboarding/presentation/onboard_screen_3.dart';
+
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({super.key});
