@@ -60,9 +60,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         },
         children: _pages,
       ),
-      bottomNavigationBar: BottomNavigation(
-        selectedIndex: _selectedIndex,
-        onTabChange: _onTabChange,
+      bottomNavigationBar: SafeArea(
+        bottom: false,
+        child: BottomNavigation(
+          selectedIndex: _selectedIndex,
+          onTabChange: _onTabChange,
+        ),
       ),
     );
   }

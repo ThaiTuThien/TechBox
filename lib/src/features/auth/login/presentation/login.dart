@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:techbox/src/features/auth/presentation/signin_google/button-google.dart';
 import 'package:techbox/src/common_widgets/button.dart';
 import 'package:techbox/src/common_widgets/input.dart';
-import 'package:techbox/src/routing/main_navigation.dart';
 import 'package:techbox/src/features/auth/presentation/divided_section/or.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/auth/forgot_password/presentation/forgot_password.dart';
-import 'package:techbox/src/features/product/presentation/home_screen.dart';
 import 'package:techbox/src/features/auth/register/presentation/signup.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MainNavigationScreen(),
+                              builder: (context) => SignUpScreen(),
                             ),
                           );
                         },

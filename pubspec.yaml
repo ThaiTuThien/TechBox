@@ -1,6 +1,6 @@
 name: techbox
 description: "E-Commerce App"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -16,6 +16,7 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   google_nav_bar: ^5.0.7
   equatable: ^2.0.7
+  flutter_svg: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -25,13 +26,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-  assets: 
-  - assets/lotties/
-  - assets/image/
+  assets:
+    - assets/lotties/
+    - assets/image/
 
-fonts: 
+fonts:
   - family: Inter
-    fonts: 
+    fonts:
       - asset: assets/fonts/Inter_18pt-Regular.ttf
       - asset: assets/fonts/Inter_18pt-Medium.ttf
         weight: 500
@@ -41,6 +42,3 @@ fonts:
         weight: 700
       - asset: assets/fonts/Inter_18pt-Italic.ttf
         style: italic
-      
-      
-      

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techbox/src/common_widgets/onboarding/onboard_screen_1.dart';
 import 'package:techbox/src/common_widgets/onboarding/onboard_screen_2.dart';

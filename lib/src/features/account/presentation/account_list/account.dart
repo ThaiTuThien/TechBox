@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
-import 'package:techbox/src/common_widgets/bottom_navigation.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techbox/src/routing/main_navigation.dart';
 
 class ButtonComponent extends StatefulWidget {
   final String text;
@@ -21,6 +22,12 @@ class _ButtonComponentState extends State<ButtonComponent> {
     setState(() {
       isLoading = false;
     });
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => MainNavigationScreen()),
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
@@ -50,7 +57,10 @@ class _ButtonComponentState extends State<ButtonComponent> {
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ] else ...[
-            Text(widget.text, style: TextStyle(fontSize: 16, color: Colors.white)),
+            Text(
+              widget.text,
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ],
         ],
       ),
