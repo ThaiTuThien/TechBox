@@ -1,6 +1,6 @@
 name: techbox
 description: "E-Commerce App"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -21,6 +21,7 @@ dependencies:
   dartz: ^0.10.1
   toastification: ^3.0.3
   flutter_dotenv: ^5.2.1
+  flutter_svg: ^2.2.0
 
 dev_dependencies:
   flutter_test:
@@ -35,9 +36,9 @@ flutter:
   - assets/image/
   - .env
 
-fonts: 
+fonts:
   - family: Inter
-    fonts: 
+    fonts:
       - asset: assets/fonts/Inter_18pt-Regular.ttf
       - asset: assets/fonts/Inter_18pt-Medium.ttf
         weight: 500
@@ -47,6 +48,3 @@ fonts:
         weight: 700
       - asset: assets/fonts/Inter_18pt-Italic.ttf
         style: italic
-      
-      
-      
