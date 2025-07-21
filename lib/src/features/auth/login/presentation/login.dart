@@ -5,7 +5,8 @@ import 'package:techbox/src/common_widgets/input.dart';
 import 'package:techbox/src/features/auth/presentation/divided_section/or.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/auth/forgot_password/presentation/forgot_password.dart';
-import 'package:techbox/src/features/auth/register/presentation/signup.dart';
+import 'package:techbox/src/features/product/presentation/home_screen.dart';
+import 'package:techbox/src/features/auth/register/presentation/wiggets/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

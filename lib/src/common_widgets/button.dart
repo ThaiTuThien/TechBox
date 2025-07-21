@@ -1,49 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/routing/main_navigation.dart';
 
-class ButtonComponent extends StatefulWidget {
+class ButtonComponent extends StatelessWidget {
   final String text;
-  const ButtonComponent({super.key, required this.text});
+  final Future<void> Function()? onPressed;
+  final bool isLoading;
 
-  @override
-  State<ButtonComponent> createState() => _ButtonComponentState();
-}
-
-class _ButtonComponentState extends State<ButtonComponent> {
-  bool isLoading = false;
-
-  void handlePress() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      isLoading = false;
-    });
-
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => MainNavigationScreen()),
-      (Route<dynamic> route) => false,
-    );
-  }
+  const ButtonComponent({
+    super.key,
+    required this.text,
+    this.onPressed,
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: isLoading ? null : handlePress,
+      onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xFF3C595D),
-        minimumSize: Size(double.infinity, 50),
+        backgroundColor: const Color(0xFF3C595D),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (isLoading) ...[
-            SizedBox(
+            const SizedBox(
               height: 20,
               width: 20,
               child: CircularProgressIndicator(
@@ -51,16 +34,13 @@ class _ButtonComponentState extends State<ButtonComponent> {
                 valueColor: AlwaysStoppedAnimation(Colors.white),
               ),
             ),
-            SizedBox(width: 10),
-            Text(
+            const SizedBox(width: 10),
+            const Text(
               'Đang tải...',
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ] else ...[
-            Text(
-              widget.text,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
+            Text(text, style: const TextStyle(fontSize: 16, color: Colors.white)),
           ],
         ],
       ),
