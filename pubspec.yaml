@@ -16,6 +16,11 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   google_nav_bar: ^5.0.7
   equatable: ^2.0.7
+  flutter_riverpod: ^2.6.1
+  http: ^1.4.0
+  dartz: ^0.10.1
+  toastification: ^3.0.3
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +33,7 @@ flutter:
   assets: 
   - assets/lotties/
   - assets/image/
+  - .env
 
 fonts: 
   - family: Inter
