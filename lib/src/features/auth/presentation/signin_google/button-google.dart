@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techbox/src/routing/main_navigation.dart';
 
 class ButtonGoogleComponent extends StatelessWidget {
   const ButtonGoogleComponent({super.key});
@@ -6,7 +7,13 @@ class ButtonGoogleComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => MainNavigationScreen()),
+          (Route<dynamic> route) => false,
+        );
+      },
       label: Text(
         'Đăng nhập với Google',
         style: TextStyle(color: Colors.black),

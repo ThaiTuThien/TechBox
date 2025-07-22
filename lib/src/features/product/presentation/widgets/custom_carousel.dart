@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
 import 'package:techbox/src/features/product/domain/carousel_item.dart';
@@ -12,6 +13,27 @@ class CustomCarousel extends StatefulWidget {
 
 class _CustomCarouselState extends State<CustomCarousel> {
   final PageController _controller = PageController();
+  Timer? _autoPlayTimer;
+  int _currentPage = 0;
+  @override
+  void initState() {
+    super.initState();
+    _startAutoPlay();
+  }
+
+  void _startAutoPlay() {
+    _autoPlayTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_controller.hasClients) {
+        int nextPage = (_currentPage + 1) % carouselItems.length;
+        _controller.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+        _currentPage = nextPage;
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -40,7 +62,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
             child: Row(
               children: [
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +70,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
                       Text(
                         item.title,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
                         ),
@@ -57,11 +79,12 @@ class _CustomCarouselState extends State<CustomCarousel> {
                       Text(
                         item.description,
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           color:
                               item.backgroundColor == Colors.white
                                   ? Colors.white
                                   : Colors.black,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(height: 8),

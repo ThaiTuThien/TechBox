@@ -35,25 +35,25 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
     if (!mounted) return;
 
     final state = ref.read(registerControllerProvider);
+    print(state);
     if (state is RegisterSuccess) {
       toastification.show(
         context: context,
         type: ToastificationType.success,
         style: ToastificationStyle.minimal,
         title: Text("Thành công"),
-        description: RichText(text: TextSpan(text: state.message)),
-        alignment: Alignment.topRight,
-        animationDuration: Duration(milliseconds: 3000),
+        description: Text(state.message),
+         alignment: Alignment.topRight,
+        animationDuration: Duration(milliseconds: 500),
         showProgressBar: true,
+        autoCloseDuration: Duration(milliseconds: 2000),
       );
 
-      Future.delayed(const Duration(milliseconds: 100), () {
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      });
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
     } else if (state is RegisterError) {
       debugPrint("Đăng ký lỗi: ${state.message}");
       toastification.show(
@@ -76,80 +76,94 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(registerControllerProvider);
+
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Tạo tài khoản', style: ConstantText.titleText),
-                SizedBox(height: 8),
-                Text(
-                  'Hãy tạo tài khoản của bạn.',
-                  style: ConstantText.descriptionText,
-                ),
-                SizedBox(height: 16),
-                InputComponent(
-                  label: 'Họ tên',
-                  hint: 'Nhập họ tên của bạn',
-                  controller: _nameController,
-                ),
-                SizedBox(height: 16),
-                InputComponent(
-                  label: 'Email',
-                  hint: 'Nhập email của bạn',
-                  controller: _emailController,
-                ),
-                SizedBox(height: 16),
-                InputComponent(
-                  label: 'Mật khẩu',
-                  hint: 'Nhập mật khẩu của bạn',
-                  controller: _passwordController,
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                ButtonComponent(
-                  text:
-                      state is RegisterLoading
-                          ? 'Đang tạo...'
-                          : 'Tạo tài khoản',
-                  onPressed: state is RegisterLoading ? null : _onRegister,
-                  isLoading: state is RegisterLoading,
-                ),
-                OrComponent(),
-                ButtonGoogleComponent(),
-                SizedBox(height: 220),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Bạn đã tài khoản?', style: TextStyle(fontSize: 16)),
-                      SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          'Đăng nhập',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 20,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Tạo tài khoản', style: ConstantText.titleText),
+                        SizedBox(height: 8),
+                        Text(
+                          'Hãy tạo tài khoản của bạn.',
+                          style: ConstantText.descriptionText,
+                        ),
+                        SizedBox(height: 16),
+                        InputComponent(
+                          label: 'Họ tên',
+                          hint: 'Nhập họ tên của bạn',
+                          controller: _nameController,
+                        ),
+                        SizedBox(height: 16),
+                        InputComponent(
+                          label: 'Email',
+                          hint: 'Nhập email của bạn',
+                          controller: _emailController,
+                        ),
+                        SizedBox(height: 16),
+                        InputComponent(
+                          label: 'Mật khẩu',
+                          hint: 'Nhập mật khẩu của bạn',
+                          controller: _passwordController,
+                          obscureText: true,
+                        ),
+                        SizedBox(height: 20),
+                        ButtonComponent(
+                          text: 'Tạo tài khoản',
+                          onPressed:
+                              state is RegisterLoading ? null : _onRegister,
+                          isLoading: state is RegisterLoading,
+                        ),
+                        OrComponent(),
+                        ButtonGoogleComponent(),
+                        Spacer(),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Bạn đã tài khoản?',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(width: 5),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Đăng nhập',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
