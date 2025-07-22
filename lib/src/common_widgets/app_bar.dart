@@ -12,7 +12,7 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
     this.title = 'Giỏ hàng',
     this.showBackButton = true,
     this.showBottomBorder = true,
-    this.onBackPressed,
+    this.onBackPressed, 
     this.onNotificationPressed,
   }) : super(key: key);
 
