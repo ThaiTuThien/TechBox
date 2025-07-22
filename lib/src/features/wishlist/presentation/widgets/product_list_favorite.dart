@@ -19,7 +19,7 @@ class ProductFavoriteListPage extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.6,
-        crossAxisSpacing: 16,
+        crossAxisSpacing: 16, 
         mainAxisSpacing: 16,
       ),
       itemBuilder: (context, index) {

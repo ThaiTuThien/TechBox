@@ -77,7 +77,7 @@ class ProductCard extends StatelessWidget {
                         "${product.rating} (${product.reviews} đánh giá)",
                         style: const TextStyle(fontSize: 12),
                       ),
-                    ],
+                    ],  
                   ),
                   const Spacer(),
                   Row(

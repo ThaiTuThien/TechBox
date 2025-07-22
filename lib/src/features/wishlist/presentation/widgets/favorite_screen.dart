@@ -19,7 +19,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         name: "iPhone 16 Pro Max",
         color: "Đen",
         storage: "256 GB",
-        price: 28990000,
+        price: 28990000, 
         imageUrl:
             "https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/article/Apple-iPhone-16-Pro-hero-240909_inline.jpg.large.jpg",
         rating: 4.9,

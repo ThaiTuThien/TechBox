@@ -7,7 +7,7 @@ class CategoryList extends StatelessWidget {
 
   const CategoryList({
     super.key,
-    required this.title,
+    required this.title, 
     required this.isSelected,
     required this.onTap,
   });
