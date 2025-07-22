@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:techbox/src/routing/main_navigation.dart';
 
 class ButtonComponent extends StatelessWidget {
   final String text;
@@ -40,7 +39,10 @@ class ButtonComponent extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ] else ...[
-            Text(text, style: const TextStyle(fontSize: 16, color: Colors.white)),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ],
         ],
       ),

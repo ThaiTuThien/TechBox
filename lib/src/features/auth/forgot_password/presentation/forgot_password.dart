@@ -14,25 +14,36 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context), 
+          icon: Icon(Icons.arrow_back)
+        ),
+      ),
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 99),
-            _textHeader(),
-            SizedBox(height: 8),
-            _textSubHeader('Nhập email của bạn để tiến hành xác thực'),
-            _textSubHeader('Chúng tôi sẽ gửi mã 6 số về email của bạn'),
-            SizedBox(height: 23),
-            _emailInput(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 0),
+              _textHeader(),
+              SizedBox(height: 8),
+              _textSubHeader('Nhập email của bạn để tiến hành xác thực'),
+              _textSubHeader('Chúng tôi sẽ gửi mã 6 số về email của bạn'),
+              SizedBox(height: 23),
+              _emailInput(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
           child: SizedBox(
             width: 341,
             height: 54,
