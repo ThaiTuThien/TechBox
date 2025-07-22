@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:techbox/src/features/product/presentation/widgets/category_section.dart';
 import 'package:techbox/src/features/product/presentation/widgets/custom_carousel.dart';
 import 'package:techbox/src/features/product/presentation/widgets/greeting_header.dart';
+import 'package:techbox/src/features/product/presentation/widgets/popular_section.dart';
+import 'package:techbox/src/features/product/presentation/widgets/recommended_section.dart';
 import 'package:techbox/src/features/product/presentation/widgets/search_bar_section.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +17,7 @@ class _MyWidgetState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -26,6 +29,8 @@ class _MyWidgetState extends State<HomeScreen> {
                 SearchBarSection(),
                 CustomCarousel(),
                 CategorySection(),
+                RecommendedSection(),
+                PopularSection(),
               ],
             ),
           ),
