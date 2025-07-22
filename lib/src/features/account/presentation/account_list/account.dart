@@ -6,111 +6,97 @@ class AccountPage extends StatelessWidget {
 
   static const List<Map<String, dynamic>> menuItems = [
     {
-      'icon': 'assets/image/bellaccount.png',
-      'title': 'Thông Báo',
+      'icon': Icons.notifications_none,
+      'title': 'Thông báo',
       'color': 0xFF3C5A5D,
     },
     {
-      'icon': 'assets/image/details.png',
-      'title': 'Thông Tin Chi Tiết',
+      'icon': Icons.person_outline,
+      'title': 'Thông tin cá nhân',
       'color': 0xFF3C5A5D,
     },
     {
-      'icon': 'assets/image/homeaccount.png',
+      'icon': Icons.location_on_outlined,
       'title': 'Địa Chỉ',
       'color': 0xFF3C5A5D,
     },
     {
-      'icon': 'assets/image/orderaccount.png',
-      'title': 'Đơn Hàng Của Tôi',
+      'icon': Icons.shopping_bag_outlined,
+      'title': 'Đơn hàng của tôi',
       'color': 0xFF3C5A5D,
     },
     {
-      'icon': 'assets/image/giftaccount.png',
-      'title': 'Đổi Thẻ Giảm Giá',
+      'icon': Icons.card_giftcard,
+      'title': 'Đổi thẻ giảm giá',
       'color': 0xFF3C5A5D,
     },
     {
-      'icon': 'assets/image/voucheraccount.png',
+      'icon': Icons.confirmation_num_outlined,
       'title': 'Voucher của tôi',
       'color': 0xFF3C5A5D,
     },
-    {
-      'icon': 'assets/image/privacypolicyaccount.png',
-      'title': 'Chính Sách Bảo Mật',
-      'color': 0xFF3C5A5D,
-    },
-    {
-      'icon': 'assets/image/settingaccount.png',
-      'title': 'Cài Đặt',
-      'color': 0xFF3C5A5D,
-    },
+    {'icon': Icons.settings_outlined, 'title': 'Cài Đặt', 'color': 0xFF3C5A5D},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Sử dụng AppBarComponent thay vì AppBar mặc định
-      appBar: const AppBarComponent(title: 'Tài Khoản'),
-
+      backgroundColor: Colors.white,
+      appBar: const AppBarComponent(title: 'Tài Khoản', showBackButton: false),
       body: ListView.separated(
         itemCount: menuItems.length + 1,
         separatorBuilder:
-            (context, index) => const Divider(
-              height: 1,
-              thickness: 1,
-              color: Color(0xFFE0E0E0),
-              indent: 16,
-              endIndent: 16,
+            (context, index) => Column(
+              children: [
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: Colors.grey.shade300,
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                SizedBox(height: 8),
+              ],
             ),
+
         itemBuilder: (context, index) {
           if (index < menuItems.length) {
             final item = menuItems[index];
-            return ListTile(
-              leading: Image.asset(
-                item['icon'],
-                width: 26,
-                height: 26,
-                fit: BoxFit.contain,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                children: [
+                  Icon(item['icon'], size: 26, color: Color(item['color'])),
+                  const SizedBox(width: 24),
+                  Expanded(
+                    child: Text(
+                      item['title'],
+                      style: const TextStyle(
+                        color: Color(0xFF3C5A5D),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 20,
+                    color: Colors.grey.shade300,
+                  ),
+                ],
               ),
-              title: Text(
-                item['title'],
-                style: const TextStyle(
-                  color: Color(0xFF3C5A5D),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-              trailing: Image.asset(
-                'assets/image/chevronaccount.png',
-                width: 18,
-                height: 18,
-                fit: BoxFit.contain,
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              minLeadingWidth: 32,
-              onTap: () {},
             );
           } else {
-            // Dòng cuối cùng: Đăng xuất
             return ListTile(
-              leading: Image.asset(
-                'assets/image/logoutaccount.png',
-                width: 26,
-                height: 26,
-                color: Colors.red, // Nếu icon là PNG trắng đen
-              ),
+              leading: Icon(Icons.logout_outlined, color: Colors.red),
               title: const Text(
-                'Đăng Xuất',
+                'Đăng xuất',
                 style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-              minLeadingWidth: 32,
-              onTap: () {},
             );
           }
         },
