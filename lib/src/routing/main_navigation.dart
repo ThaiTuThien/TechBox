@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/common_widgets/bottom_navigation.dart';
-import 'package:techbox/src/features/account/presentation/account_list/account.dart';
+import 'package:techbox/src/features/account/presentation/widgets/account_list/account.dart';
 import 'package:techbox/src/features/address/presentation/update_address/update_address.dart';
 import 'package:techbox/src/features/cart/presentation/empty_cart/cart_empty.dart';
 import 'package:techbox/src/features/wishlist/presentation/favorite_screen.dart';

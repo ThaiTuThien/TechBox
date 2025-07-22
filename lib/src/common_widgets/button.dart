@@ -40,7 +40,10 @@ class ButtonComponent extends StatelessWidget {
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ] else ...[
-            Text(text, style: const TextStyle(fontSize: 16, color: Colors.white)),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 16, color: Colors.white),
+            ),
           ],
         ],
       ),
