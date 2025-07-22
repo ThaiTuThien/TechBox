@@ -19,9 +19,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    UpdateAddressPage(),
+    CheckoutPage(),
     FavoriteScreen(),
-    CartEmpty(),
+    CartPage(),
     AccountPage(),
   ];
 
