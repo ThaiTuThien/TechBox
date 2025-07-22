@@ -13,7 +13,7 @@ class CartEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/image/cart.png', width: 64, height: 64),
+            Icon(Icons.shopping_cart_outlined, size: 64, color: Colors.grey.shade300),
             SizedBox(height: 16),
             Text(
               'Giỏ hàng trống',

@@ -31,7 +31,7 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.symmetric(horizontal: 3),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: kToolbarHeight,
                 child: Row(
                   children: [
@@ -47,7 +47,6 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
                       )
                     else
                       const SizedBox(width: 48), 
-                    
                     // Title
                     Expanded(
                       child: Text(
@@ -63,10 +62,9 @@ class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
                     
                     // Notification Button
                     IconButton(
-                      icon: Image.asset(
-                        'assets/image/notification.png',
-                        width: 18.75,
-                        height: 20.25,
+                      icon: Icon(
+                        Icons.notifications_outlined,
+                        size: 24,
                       ),
                       onPressed: onNotificationPressed ?? () {},
                     ),

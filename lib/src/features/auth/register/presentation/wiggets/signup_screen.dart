@@ -35,25 +35,25 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
     if (!mounted) return;
 
     final state = ref.read(registerControllerProvider);
+    print(state);
     if (state is RegisterSuccess) {
       toastification.show(
         context: context,
         type: ToastificationType.success,
         style: ToastificationStyle.minimal,
         title: Text("Thành công"),
-        description: RichText(text: TextSpan(text: state.message)),
-        alignment: Alignment.topRight,
-        animationDuration: Duration(milliseconds: 3000),
+        description: Text(state.message),
+         alignment: Alignment.topRight,
+        animationDuration: Duration(milliseconds: 500),
         showProgressBar: true,
+        autoCloseDuration: Duration(milliseconds: 2000),
       );
 
-      Future.delayed(const Duration(milliseconds: 100), () {
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      });
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
     } else if (state is RegisterError) {
       debugPrint("Đăng ký lỗi: ${state.message}");
       toastification.show(
@@ -120,10 +120,7 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
                         ),
                         SizedBox(height: 20),
                         ButtonComponent(
-                          text:
-                              state is RegisterLoading
-                                  ? 'Đang tạo...'
-                                  : 'Tạo tài khoản',
+                          text: 'Tạo tài khoản',
                           onPressed:
                               state is RegisterLoading ? null : _onRegister,
                           isLoading: state is RegisterLoading,

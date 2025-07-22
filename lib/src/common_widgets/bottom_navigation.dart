@@ -10,12 +10,12 @@ class BottomNavigation extends StatelessWidget {
     required this.onTabChange,
   }) : super(key: key);
 
-  static const List<String> _assetPaths = [
-    'assets/image/home.png',
-    'assets/image/shopping_bag.png',
-    'assets/image/heart.png',
-    'assets/image/cart.png',
-    'assets/image/user.png',
+  static const List<IconData> _assetPaths = [
+    Icons.home,
+    Icons.shopping_bag_outlined,
+    Icons.favorite_outline,
+    Icons.shopping_cart_outlined,
+    Icons.account_circle_outlined,
   ];
 
   @override
@@ -45,10 +45,9 @@ class BottomNavigation extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: Image.asset(
+                child: Icon(
                   _assetPaths[index],
-                  width: 24,
-                  height: 24,
+                  size: 24,
                   color:
                       isSelected
                           ? const Color.fromARGB(255, 60, 90, 93)
