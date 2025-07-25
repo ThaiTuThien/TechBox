@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:techbox/src/common_widgets/notifcation.dart';
 import 'package:techbox/src/features/auth/presentation/signin_google/button-google.dart';
 import 'package:techbox/src/common_widgets/button.dart';
 import 'package:techbox/src/common_widgets/input.dart';
@@ -10,7 +11,7 @@ import 'package:techbox/src/features/auth/login/presentation/login.dart';
 import 'package:techbox/src/features/auth/register/data/dtos/register_dto.dart';
 import 'package:techbox/src/features/auth/register/presentation/controllers/register_controller.dart';
 import 'package:techbox/src/features/auth/register/presentation/states/register_state.dart';
-import 'package:toastification/toastification.dart';
+import 'package:techbox/src/features/auth/verify_email/presentation/widgets/verify_email_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
@@ -35,41 +36,16 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
     if (!mounted) return;
 
     final state = ref.read(registerControllerProvider);
-    print(state);
     if (state is RegisterSuccess) {
-      toastification.show(
-        context: context,
-        type: ToastificationType.success,
-        style: ToastificationStyle.minimal,
-        title: Text("Thành công"),
-        description: Text(state.message),
-         alignment: Alignment.topRight,
-        animationDuration: Duration(milliseconds: 500),
-        showProgressBar: true,
-        autoCloseDuration: Duration(milliseconds: 2000),
-      );
+      NotificationComponent(title: 'Thành công', description: state.message, type: 'success').build(context);
 
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        MaterialPageRoute(builder: (context) => const VerifyEmailScreen()),
       );
     } else if (state is RegisterError) {
-      debugPrint("Đăng ký lỗi: ${state.message}");
-      toastification.show(
-        context: context,
-        type: ToastificationType.error,
-        style: ToastificationStyle.minimal,
-        title: Text("Thất bại"),
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        description: RichText(text: TextSpan(text: state.message)),
-        borderRadius: BorderRadius.circular(8),
-        alignment: Alignment.topRight,
-        animationDuration: Duration(milliseconds: 300),
-        showProgressBar: true,
-        autoCloseDuration: Duration(milliseconds: 1500),
-      );
+      NotificationComponent(title: 'Thất bại', description: state.message, type: 'error').build(context);
     }
   }
 

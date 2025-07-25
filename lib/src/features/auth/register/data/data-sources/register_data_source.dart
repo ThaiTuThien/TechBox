@@ -12,7 +12,6 @@ class RegisterDataSource {
     if (response.statusCode == 200) {
       final jsonRes = jsonDecode(response.body);
       final data = jsonRes['message'];
-      print(data);
       return data;
     } else {
       throw Exception('Register failed: ${response.body}');
