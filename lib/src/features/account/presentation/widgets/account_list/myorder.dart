@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/features/account/presentation/widgets/radial_barchart.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
+import 'package:techbox/src/features/account/presentation/widgets/account_list/order_rating_dialog.dart';
 
 class MyOrderPage extends StatelessWidget {
   const MyOrderPage({super.key});
@@ -169,8 +170,30 @@ class _OrderList extends StatelessWidget {
       itemCount: 3,
       separatorBuilder: (_, __) => const SizedBox(height: 12),
       itemBuilder:
-          (context, index) =>
-              _OrderCard(statusColor: statusColor, statusText: statusText),
+          (context, index) => _OrderCard(
+            statusColor: statusColor,
+            statusText: statusText,
+            onRatePressed:
+                statusText == "Đã giao hàng"
+                    ? () {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => RatingDialog(),
+                      );
+                    }
+                    : null,
+            onRestorePressed:
+                statusText == "Đã huỷ"
+                    ? () {
+                      // Xử lý khôi phục đơn hàng (ví dụ: gọi API hoặc thông báo)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Đang khôi phục đơn hàng...'),
+                        ),
+                      );
+                    }
+                    : null,
+          ),
     );
   }
 }
@@ -213,14 +236,22 @@ class _OrderLegend extends StatelessWidget {
 class _OrderCard extends StatelessWidget {
   final Color statusColor;
   final String statusText;
+  final VoidCallback? onRatePressed;
+  final VoidCallback? onRestorePressed;
 
   const _OrderCard({
     this.statusColor = const Color(0xFFE80054),
     this.statusText = "Chờ xác nhận",
+    this.onRatePressed,
+    this.onRestorePressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isShipped = statusText == "Đã gửi hàng";
+    final bool isDelivered = statusText == "Đã giao hàng";
+    final bool isCanceled = statusText == "Đã huỷ";
+
     return Card(
       margin: EdgeInsets.zero,
       elevation: 0,
@@ -275,77 +306,169 @@ class _OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 3),
-            Text(
-              "Tổng tiền: 12.000.000đ",
-              style: TextStyle(
-                color: Colors.grey[800],
-                fontWeight: FontWeight.w500,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    icon: Image.asset(
-                      'assets/image/garbage.png',
-                      color: statusColor,
-                      width: 20,
-                      height: 20,
+            const SizedBox(height: 8),
+            // Dòng chứa Tổng tiền và nút(s) cho các tab đặc biệt
+            if (isShipped || isDelivered || isCanceled)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Tổng tiền: 12.000.000đ",
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15,
                     ),
-                    label: Text(
-                      "Hủy đơn",
-                      style: TextStyle(
-                        color: statusColor,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
-                      ),
-                    ),
-                    style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: statusColor, width: 1.3),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      foregroundColor: statusColor,
-                    ),
-                    onPressed: () {},
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Image.asset(
-                      'assets/image/address.png',
-                      color: Colors.white,
-                      width: 20,
-                      height: 20,
-                    ),
-                    label: const Text(
-                      "Theo dõi đơn",
-                      style: TextStyle(
+                  // Nút cho tab Đã gửi hàng: Chỉ Theo dõi đơn
+                  if (isShipped)
+                    ElevatedButton.icon(
+                      icon: Image.asset(
+                        'assets/image/address.png',
                         color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        width: 20,
+                        height: 20,
+                      ),
+                      label: const Text(
+                        "Theo dõi đơn",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF314B52),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () {},
+                    ),
+                  // Nút cho tab Đã giao hàng: Chỉ Đánh giá
+                  if (isDelivered)
+                    ElevatedButton(
+                      onPressed: onRatePressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF314B52),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Text(
+                        'Đánh giá',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF314B52),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  // Nút cho tab Đã huỷ: Chỉ Khôi phục
+                  if (isCanceled)
+                    ElevatedButton(
+                      onPressed: onRestorePressed,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFB5179E),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      elevation: 0,
+                      child: const Text(
+                        'Khôi phục lại đơn hàng',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
-                    onPressed: () {},
-                  ),
+                ],
+              ),
+            // Các tab khác: Hai nút riêng dòng dưới
+            if (!isShipped && !isDelivered && !isCanceled) ...[
+              Text(
+                "Tổng tiền: 12.000.000đ",
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      icon: Image.asset(
+                        'assets/image/garbage.png',
+                        color: statusColor,
+                        width: 20,
+                        height: 20,
+                      ),
+                      label: Text(
+                        "Hủy đơn",
+                        style: TextStyle(
+                          color: statusColor,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: statusColor, width: 1.3),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                        backgroundColor: Colors.white,
+                        foregroundColor: statusColor,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: Image.asset(
+                        'assets/image/address.png',
+                        color: Colors.white,
+                        width: 20,
+                        height: 20,
+                      ),
+                      label: const Text(
+                        "Theo dõi đơn",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 15,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF314B52),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
