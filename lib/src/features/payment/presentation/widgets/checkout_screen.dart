@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
+import 'package:techbox/src/common_widgets/success_notification.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/address/presentation/update_address/update_address.dart';
 
@@ -169,11 +170,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
       bottomNavigationBar: _buildBottomButton(
         buttonText: 'Đặt hàng',
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Đặt hàng thành công!'),
-              backgroundColor: Color.fromARGB(255, 12, 20, 21),
-            ),
+          SuccessNotification.show(
+            context, 
+            subtitleText: 'Chúc mừng bạn đã thanh toán thành công', 
+            buttonText: 'OK'
           );
         },
       ),
@@ -364,32 +364,32 @@ class _CheckoutPageState extends State<CheckoutPage> {
   required String description,
   required int price,
   required Color color,
-  required Color containerBorderColor, 
+  required Color containerBorderColor,
   required IconData icon,
   required bool isSelected,
   required VoidCallback onTap,
 }) {
   return _buildWhiteContainer(
     margin: const EdgeInsets.only(bottom: 12),
-    borderColor: isSelected ? containerBorderColor : color, 
+    borderColor: isSelected ? containerBorderColor : color,
     borderWidth: 2.0,
     hasShadow: false,
     child: InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(0), 
         child: Row(
           children: [
             // Icon Container
             Container(
-              width: 48,
-              height: 48,
+              width: 40, 
+              height: 40, 
               decoration: BoxDecoration(
                 color: isSelected ? containerBorderColor : color,
-                borderRadius: BorderRadius.circular(24),
+                borderRadius: BorderRadius.circular(20), 
               ),
-              child: Icon(icon, color: Colors.white, size: 24),
+              child: Icon(icon, color: Colors.white, size: 20), 
             ),
             const SizedBox(width: 16),
             
@@ -446,7 +446,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         height: 16,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: containerBorderColor, 
+                          color: containerBorderColor,
                         ),
                       ),
                     )

@@ -8,14 +8,13 @@ class SuccessNotification extends StatelessWidget {
   final VoidCallback? onButtonPressed;
 
   const SuccessNotification({
-    Key? key,
+    super.key,
     required this.subtitleText,
     required this.buttonText,
     this.navigateToPage,
     this.onButtonPressed,
-  }) : super(key: key);
+  });
 
-  // Hàm để hiển thị dialog
   static void show(
     BuildContext context, {
     required String subtitleText,
@@ -25,7 +24,7 @@ class SuccessNotification extends StatelessWidget {
   }) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Không cho phép đóng dialog khi nhấn ra ngoài
+      barrierDismissible: false, 
       barrierColor: const Color.fromARGB(51, 25, 25, 25), 
       builder: (BuildContext context) {
         return SuccessNotification(
@@ -54,7 +53,6 @@ class SuccessNotification extends StatelessWidget {
           children: [
             const SizedBox(height: 8),
 
-            // Green checkmark icon - exact match
             Container(
               width: 63.38,
               height: 63.38,
@@ -75,7 +73,6 @@ class SuccessNotification extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Title "Chúc mừng !" - exact styling
             const Text(
               'Chúc mừng !',
               style: TextStyle(
@@ -88,7 +85,6 @@ class SuccessNotification extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Customizable subtitle text - exact styling
             Text(
               subtitleText,
               style: const TextStyle(
@@ -102,19 +98,15 @@ class SuccessNotification extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Button - exact styling and color
             SizedBox(
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  // Thực hiện hành động onButtonPressed nếu có
                   if (onButtonPressed != null) {
                     onButtonPressed!();
                   }
-                  // Đóng dialog
                   Navigator.of(context).pop();
-                  // Điều hướng đến trang mới nếu có
                   if (navigateToPage != null) {
                     Navigator.push(
                       context,

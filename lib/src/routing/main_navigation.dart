@@ -3,8 +3,8 @@ import 'package:techbox/src/common_widgets/bottom_navigation.dart';
 import 'package:techbox/src/features/account/presentation/widgets/account_list/account.dart';
 import 'package:techbox/src/features/address/presentation/update_address/update_address.dart';
 import 'package:techbox/src/features/cart/presentation/empty_cart/cart_empty.dart';
+import 'package:techbox/src/features/product/presentation/screens/home_screen.dart';
 import 'package:techbox/src/features/wishlist/presentation/widgets/favorite_screen.dart';
-import 'package:techbox/src/features/product/presentation/home_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -19,9 +19,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    UpdateAddressPage(),
+    CheckoutPage(),
     FavoriteScreen(),
-    CartEmpty(),
+    CartPage(),
     AccountPage(),
   ];
 
