@@ -6,6 +6,7 @@ import 'package:techbox/src/common_widgets/splash_screen.dart';
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
   runApp(ProviderScope(child: MainApp()));
+
 }
 
 class MainApp extends StatelessWidget {
