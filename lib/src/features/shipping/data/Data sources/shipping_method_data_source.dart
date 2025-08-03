@@ -14,7 +14,7 @@ class ShippingMethodDataSource {
     );
 
     if (response.statusCode == 200){
-      final data = jsonDecode(response.body) ['data'] ['method'] as List;
+      final data = jsonDecode(response.body) ['data'] ['methods'] as List;
       return data.map((json) => ShippingMethod.fromJson(json)).toList();
     }
     else{

@@ -5,24 +5,24 @@ import 'package:techbox/src/features/shipping/data/Dtos/calculate_fee_dto.dart';
 import 'package:techbox/src/features/shipping/data/Repositories/shipping_method_repository.dart';
 import 'package:techbox/src/features/shipping/presentation/State/shipping_method_state.dart';
 
-class ShippingMethodController extends StateNotifier<ShippingMethodState>{
-    final ShippingMethodService _service ;
+class ShippingMethodController extends StateNotifier<ShippingMethodState> {
+  final ShippingMethodService _service;
 
-    ShippingMethodController(this._service) : super(ShippingMethodInnitial());
+  ShippingMethodController(this._service) : super(ShippingMethodInnitial());
 
-    Future<void> calculateFee(CalculateFeeDto dto) async {
-      state = ShippingMethodLoading();
-      final result = await _service.calculateFee(dto);
-      result.fold(
-        (error) => state = ShippingMethodError(error.toString()),
-        (methods) => state = ShippingMethodSuccess(methods),
-      );
-    }
+  Future<void> calculateFee(CalculateFeeDto dto) async {
+    state = ShippingMethodLoading();
+    final result = await _service.calculateFee(dto);
+    result.fold(
+      (failure) => state = ShippingMethodError(failure.toString()),
+      (success) => state = ShippingMethodSuccess(success),
+    );
+  }
 }
 
-final shippingMethodControllerProvider = StateNotifierProvider<ShippingMethodController, ShippingMethodState>((ref){
+final shippingMethodControllerProvider = StateNotifierProvider<ShippingMethodController, ShippingMethodState>((ref) {
   final dataSource = ShippingMethodDataSource();
   final repository = ShippingMethodRepository(dataSource);
   final service = ShippingMethodService(repository);
-  return ShippingMethodController(service);
+  return ShippingMethodController(service); 
 });

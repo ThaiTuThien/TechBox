@@ -39,7 +39,7 @@ flutter:
   assets:
     - assets/lotties/
     - assets/image/
-    # - .env
+    - .env
 
 fonts:
   - family: Inter

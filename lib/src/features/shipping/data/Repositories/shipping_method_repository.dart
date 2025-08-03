@@ -5,17 +5,16 @@ import 'package:techbox/src/features/shipping/domain/Models/shipping_method.dart
 
 
 class ShippingMethodRepository {
-  final ShippingMethodDataSource _dataSource = ShippingMethodDataSource();
+  final ShippingMethodDataSource _dataSource;
 
-  ShippingMethodRepository(ShippingMethodDataSource dataSource);
+  ShippingMethodRepository(this._dataSource);
 
   Future<Either<Exception, List<ShippingMethod>>> calculateFee(CalculateFeeDto dto) async {
     try {
       final methods = await _dataSource.calculateFee(dto);
       return Right(methods);
-    }
-    catch (e){
-      return Left(Exception('Repository error : $e'));
+    } catch (e) {
+      return Left(Exception('Repository error: $e'));
     }
   }
 }

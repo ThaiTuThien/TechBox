@@ -11,10 +11,8 @@ class ShippingMethodService {
 
   Future<Either<Exception, List<ShippingMethod>>> calculateFee(CalculateFeeDto dto) async {
     try {
-      final methods = await _repository.calculateFee(dto);
-      return Right(methods as List<ShippingMethod>);
-    } 
-    catch (e) {
+      return await _repository.calculateFee(dto); 
+    } catch (e) {
       return Left(Exception('Service error: $e'));
     }
   }
