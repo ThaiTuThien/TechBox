@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:techbox/src/features/auth/verify_email/domain/dtos/verify_email_dto.dart';
+import 'package:techbox/src/features/auth/verify_email/data/dtos/verify_email_dto.dart';
 import 'package:http/http.dart' as http;
 
 class VerifyEmailDataSource {

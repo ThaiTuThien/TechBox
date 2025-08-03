@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:techbox/src/common_widgets/notifcation.dart';
+import 'package:techbox/src/features/auth/login/data/dtos/login_dto.dart';
+import 'package:techbox/src/features/auth/login/presentation/controllers/login_controllers.dart';
+import 'package:techbox/src/features/auth/login/presentation/states/login_states.dart';
 import 'package:techbox/src/features/auth/presentation/signin_google/button-google.dart';
 import 'package:techbox/src/common_widgets/button.dart';
 import 'package:techbox/src/common_widgets/input.dart';
@@ -6,26 +11,50 @@ import 'package:techbox/src/features/auth/presentation/divided_section/or.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/auth/forgot_password/presentation/forgot_password.dart';
 import 'package:techbox/src/features/auth/register/presentation/wiggets/signup_screen.dart';
+import 'package:techbox/src/features/product/presentation/screens/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreen();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final nameController = TextEditingController();
+class _LoginScreen extends ConsumerState<LoginScreen> {
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   void dispose() {
-    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _login() async {
+    final dto = LoginDto(
+      email: emailController.text.trim(), 
+      password: passwordController.text.trim(), 
+      role: 'user'
+    );
+
+    await ref.read(loginControllerProvider.notifier).login(dto);
+    if (!mounted) return;
+
+    final state = ref.read(loginControllerProvider);
+    if (state is LoginSuccess) {
+      NotificationComponent(title: 'Thành công', description: 'Đăng nhập thành công', type: 'success').build(context);
+      if (!mounted) return;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }
+    else if (state is LoginError) {
+      NotificationComponent(title: 'Thất bại', description: state.message, type: 'error').build(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(loginControllerProvider);
     return SafeArea(
       child: Scaffold(
         body: LayoutBuilder(
@@ -55,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         InputComponent(
                           label: 'Email',
                           hint: 'Nhập email của bạn',
-                          controller: nameController,
+                          controller: emailController,
                         ),
                         SizedBox(height: 16),
                         InputComponent(
@@ -86,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         SizedBox(height: 24),
-                        ButtonComponent(text: 'Đăng nhập'),
+                        ButtonComponent(text: 'Đăng nhập', isLoading: state is LoginLoading, onPressed: () => _login(), ),
                         OrComponent(),
                         ButtonGoogleComponent(),
                         Spacer(),

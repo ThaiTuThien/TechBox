@@ -4,7 +4,7 @@ import 'package:pinput/pinput.dart';
 import 'package:techbox/src/common_widgets/button.dart';
 import 'package:techbox/src/common_widgets/notifcation.dart';
 import 'package:techbox/src/core/constants.dart';
-import 'package:techbox/src/features/auth/verify_email/domain/dtos/verify_email_dto.dart';
+import 'package:techbox/src/features/auth/verify_email/data/dtos/verify_email_dto.dart';
 import 'package:techbox/src/features/auth/verify_email/presentation/controllers/verify_email_controller.dart';
 import 'package:techbox/src/features/auth/verify_email/presentation/states/verify_email_state.dart';
 import 'package:techbox/src/features/product/presentation/screens/home_screen.dart';
@@ -36,14 +36,13 @@ class _VerifyEmailScreen extends ConsumerState<VerifyEmailScreen> {
       Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
     else if (state is VerifyEmailError) {
-      print (dto);
-      print(state.message);
       NotificationComponent(title: 'Thất bại', description: state.message, type: 'error').build(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(verifyEmailControllerProvider);
     final defaultPinTheme = PinTheme(
       width: 50,
       height: 50,
@@ -100,7 +99,7 @@ class _VerifyEmailScreen extends ConsumerState<VerifyEmailScreen> {
             const SizedBox(height: 30),
             ButtonComponent(
               text: 'Xác minh',
-              isLoading: false,
+              isLoading: state is VerifyEmailLoading,
               onPressed: () => _onCompleted(),
             ),
           ],
