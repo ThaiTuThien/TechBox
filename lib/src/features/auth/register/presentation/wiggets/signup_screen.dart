@@ -7,7 +7,7 @@ import 'package:techbox/src/common_widgets/button.dart';
 import 'package:techbox/src/common_widgets/input.dart';
 import 'package:techbox/src/features/auth/presentation/divided_section/or.dart';
 import 'package:techbox/src/core/constants.dart';
-import 'package:techbox/src/features/auth/login/presentation/login.dart';
+import 'package:techbox/src/features/auth/login/presentation/widgets/login_screen.dart';
 import 'package:techbox/src/features/auth/register/data/dtos/register_dto.dart';
 import 'package:techbox/src/features/auth/register/presentation/controllers/register_controller.dart';
 import 'package:techbox/src/features/auth/register/presentation/states/register_state.dart';
@@ -24,6 +24,14 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   Future<void> _onRegister() async {
     final dto = RegisterDto(

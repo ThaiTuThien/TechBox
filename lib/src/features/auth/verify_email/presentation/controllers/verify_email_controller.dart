@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/features/auth/verify_email/application/services/verify_email_services.dart';
 import 'package:techbox/src/features/auth/verify_email/data/data-sources/verify_email_data_source.dart';
 import 'package:techbox/src/features/auth/verify_email/data/repository/verify_email_repository.dart';
-import 'package:techbox/src/features/auth/verify_email/domain/dtos/verify_email_dto.dart';
+import 'package:techbox/src/features/auth/verify_email/data/dtos/verify_email_dto.dart';
 import 'package:techbox/src/features/auth/verify_email/presentation/states/verify_email_state.dart';
 
 class VerifyEmailController extends StateNotifier<VerifyEmailState>{

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:techbox/src/features/auth/verify_email/data/repository/verify_email_repository.dart';
-import 'package:techbox/src/features/auth/verify_email/domain/dtos/verify_email_dto.dart';
+import 'package:techbox/src/features/auth/verify_email/data/dtos/verify_email_dto.dart';
 
 class VerifyEmailServices {
   final VerifyEmailRepository _repository;
