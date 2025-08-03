@@ -14,7 +14,9 @@ class RegisterDataSource {
       final data = jsonRes['message'];
       return data;
     } else {
-      throw Exception('Register failed: ${response.body}');
+      final decoded = jsonDecode(response.body);
+      final message = decoded['message'] ?? 'Lỗi không xác định';
+      throw Exception(message);
     }
   }
 }

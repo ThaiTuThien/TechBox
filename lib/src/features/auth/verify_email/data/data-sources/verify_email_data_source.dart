@@ -27,7 +27,9 @@ class VerifyEmailDataSource {
       }
       return decoded['message'];
     } else {
-      throw Exception('Verify email failed ${response.body}');
+      final decoded = jsonDecode(response.body);
+      final message = decoded['message'] ?? 'Lỗi không xác định';
+      throw Exception(message);
     }
   }
 }
