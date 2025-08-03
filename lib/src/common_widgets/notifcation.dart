@@ -30,8 +30,8 @@ class NotificationComponent extends StatelessWidget {
         title: Text(title),
         description: Text(description),
         alignment: Alignment.topRight,
-        animationDuration: Duration(milliseconds: 500),
-        autoCloseDuration: Duration(milliseconds: 1500)
+        animationDuration: Duration(milliseconds: 800),
+        autoCloseDuration: Duration(milliseconds: 2000)
       );
     });
     return SizedBox.shrink();
