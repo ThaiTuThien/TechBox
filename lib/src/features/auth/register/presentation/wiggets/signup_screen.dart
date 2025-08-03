@@ -42,7 +42,7 @@ class _SignUpScreen extends ConsumerState<SignUpScreen> {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const VerifyEmailScreen()),
+        MaterialPageRoute(builder: (context) => VerifyEmailScreen(email: dto.email)),
       );
     } else if (state is RegisterError) {
       NotificationComponent(title: 'Thất bại', description: state.message, type: 'error').build(context);
