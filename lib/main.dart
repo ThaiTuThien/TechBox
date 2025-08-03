@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/features/account/presentation/widgets/account_list/myvoucher.dart';
+import 'package:techbox/src/features/shipping/presentation/Widget/shipping_method_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Inter'),
-      home: MyVoucherPage(),
+      home: ShippingMethodScreen(),
     );
   }
 }
