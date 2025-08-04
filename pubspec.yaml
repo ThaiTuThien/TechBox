@@ -42,7 +42,6 @@ flutter:
     - assets/lotties/
     - assets/image/
     - .env
-  
 
 fonts:
   - family: Inter
