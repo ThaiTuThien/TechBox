@@ -42,11 +42,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       storeName: 'Dương Nguyễn Thuận Thiên',
                       storeAddress: '111 Đường 3/2, Phường 12, Quận 10, TP.HCM',
                       onEditPressed: () {
-                        Navigator.push(
-                          context, MaterialPageRoute (
-                            builder: (context) => UpdateAddressPage()
-                          ),
-                        );
+                        // Navigator.push(
+                        //   context, MaterialPageRoute (
+                        //     builder: (context) => UpdateAddressPage()
+                        //   ),
+                        // );
                       },
                     ),
                     _divider(),

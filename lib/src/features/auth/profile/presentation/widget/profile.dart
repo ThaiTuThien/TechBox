@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/address/presentation/update_address/update_address.dart';
+import 'package:techbox/src/features/auth/profile/domain/models/profile_model.dart';
+import 'package:techbox/src/features/auth/profile/presentation/controller/profile_controller.dart';
+import 'package:techbox/src/features/auth/profile/presentation/state/profile_state.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(profileControllerProvider.notifier).fetchProfile();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(profileControllerProvider);
     return Scaffold(
       appBar: AppBarComponent(
         title: 'Thông tin cá nhân',
@@ -24,41 +37,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildPageTitle(),
-                const SizedBox(height: 24),
-                _buildUserProfileCard(),
-                const SizedBox(height: 24),
-                _buildPersonalInfoSection(),
-                const SizedBox(height: 24),
-                _buildAddressSection(),
-                const SizedBox(height: 32),
-                _buildEditButton(context),
-                const SizedBox(height: 16),
-              ],
-            ),
+            child: _buildBody(state),
           ),
         ),
       ),
     );
   }
 
-  // Page Title Widget Function
-  Widget _buildPageTitle() {
-    return Text(
-      'Hồ sơ của tôi',
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: ConstantsColor.colorMain,
-      ),
-    );
+  Widget _buildBody(ProfileState state) {
+    if (state is ProfileLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (state is ProfileError) {
+      return Center(child: Text('Lỗi: ${state.message}'));
+    }
+    if (state is ProfileSuccess) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 24),
+          _buildUserProfileCard(state.response),
+          const SizedBox(height: 24),
+          _buildPersonalInfoSection(state.response),
+          const SizedBox(height: 24),
+          _buildAddressSection(state.response),
+          const SizedBox(height: 60),
+          _buildEditButton(context),
+          const SizedBox(height: 16),
+        ],
+      );
+    }
+    return const SizedBox.shrink();
   }
 
-  // User Profile Card Widget Function
-  Widget _buildUserProfileCard() {
+  Widget _buildUserProfileCard(ProfileModel profile) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -76,16 +88,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAvatar(),
+          _buildAvatar(profile.name),
           const SizedBox(width: 16),
-          Expanded(child: _buildUserInfo()),
+          Expanded(child: _buildUserInfo(profile)),
         ],
       ),
     );
   }
 
-  // Avatar Widget Function
-  Widget _buildAvatar() {
+  Widget _buildAvatar(String name) {
+    String initials =
+        name.isNotEmpty
+            ? name.trim().split(' ').map((s) => s[0]).take(2).join()
+            : 'NS';
     return Container(
       width: 60,
       height: 60,
@@ -93,10 +108,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: Colors.blue,
         shape: BoxShape.circle,
       ),
-      child: const Center(
+      child: Center(
         child: Text(
-          'NS',
-          style: TextStyle(
+          initials,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -106,61 +121,73 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // User Info Widget Function
-  Widget _buildUserInfo() {
+  Widget _buildUserInfo(ProfileModel profile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Nam Sang',
-          style: TextStyle(
+        Text(
+          profile.name,
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Colors.black87,
           ),
         ),
         const SizedBox(height: 4),
-        Text('User', style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+        Text(
+          profile.role,
+          style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+        ),
         const SizedBox(height: 8),
         Text(
-          '563/95/6 Lê Văn Khương, Phường Hiệp Thành, Quận 12, Thành phố Hồ Chí Minh, Vietnam',
+          profile.address.street.isNotEmpty
+              ? '${profile.address.street}, ${profile.address.ward}, ${profile.address.district},${profile.address.city}'
+              : 'Chưa cập nhật',
           style: TextStyle(fontSize: 14, color: Colors.grey[700], height: 1.4),
+          softWrap: true,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
   }
 
-  Widget _buildPersonalInfoSection() {
+  Widget _buildPersonalInfoSection(ProfileModel profile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionTitle('Thông tin cá nhân'),
         const SizedBox(height: 16),
-        _buildInfoRow('Họ và tên', 'Nam Sang', 'Số điện thoại', '0329703638'),
+        _buildInfoRow(
+          'Họ và tên',
+          profile.name,
+          'Số điện thoại',
+          profile.phoneNumber,
+        ),
         const SizedBox(height: 16),
-        _buildInfoRow('Email', 'namsang0902@gmail.com', '', ''),
+        _buildInfoRow('Email', profile.email, '', ''),
       ],
     );
   }
 
-  Widget _buildAddressSection() {
+  Widget _buildAddressSection(ProfileModel profile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildSectionTitle('Địa chỉ'),
         const SizedBox(height: 16),
         _buildInfoRow(
-          'Địa chỉ',
-          '563/95/6 Lê Văn Khương',
+          'Số nhà/Tên đường',
+          profile.address.street,
           'Phường/Xã',
-          'Phường Hiệp Thành',
+          profile.address.ward,
         ),
         const SizedBox(height: 16),
         _buildInfoRow(
-          'Quận',
-          'Quận 12',
-          'Tỉnh / Thành phố',
-          'Thành phố Hồ Chí Minh',
+          'Quận/Huyện',
+          profile.address.district,
+          'Tỉnh/Thành phố',
+          profile.address.city,
         ),
       ],
     );
@@ -208,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          value,
+          value.isEmpty ? 'Chưa cập nhật' : value,
           style: const TextStyle(
             fontSize: 16,
             color: Colors.black87,
@@ -223,12 +250,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          // Handle edit button press
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UpdateAddressPage()),
-          );
+        onPressed: () async {
+          final result = await Navigator.push;
+          if (result == true) {
+            ref.read(profileControllerProvider.notifier).fetchProfile();
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: ConstantsColor.colorMain,
