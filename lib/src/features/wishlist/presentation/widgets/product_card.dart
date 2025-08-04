@@ -5,9 +5,9 @@ class Product {
   final String name;
   final String color;
   final String storage;
-  final double price;
+  final int price;
   final String imageUrl;
-  final double rating;
+  final int rating;
   final int reviews;
 
   Product({

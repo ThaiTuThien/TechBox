@@ -1,17 +1,17 @@
-import 'dart:ffi';
 import 'package:equatable/equatable.dart';
 
 class ProductVariantModel extends Equatable {
   final String id;
   final ColorModel color;
   final String product;
-  final Int rating;
+  final int rating;
   final String storage;
-  final Int price;
+  final int price;
   final String status;
-  final Int stock;
+  final int stock;
   final String slug;
   final List<String> images;
+  final List<String> reviews;
 
   const ProductVariantModel({
     required this.id,
@@ -23,7 +23,8 @@ class ProductVariantModel extends Equatable {
     required this.status,
     required this.stock,
     required this.slug,
-    required this.images
+    required this.images,
+    required this.reviews
   });
 
   factory ProductVariantModel.fromJson(Map<String, dynamic> json) {
@@ -35,14 +36,15 @@ class ProductVariantModel extends Equatable {
       storage: json['storage'], 
       price: json['price'], 
       status: json['status'], 
-      stock: json['stock'], 
+      stock: json['stock_quantity'], 
       slug: json['slug'], 
-      images: List<String>.from(json['images'])
+      images: List<String>.from(json['images']),
+      reviews: List<String>.from(json['reviews'])
     );
   }
 
   @override
-  List<Object?> get props => [id, color, product, rating, storage, price, status, stock, slug, images];
+  List<Object?> get props => [id, color, product, rating, storage, price, status, stock, slug, images, reviews];
 }
 
 class ColorModel extends Equatable{

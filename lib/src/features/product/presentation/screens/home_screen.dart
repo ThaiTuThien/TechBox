@@ -31,7 +31,7 @@ class _MyWidgetState extends State<HomeScreen> {
                 CustomCarousel(),
                 CategorySection(),
                 RecommendedSection(),
-                PopularSection(),
+                // PopularSection(),
               ],
             ),
           ),

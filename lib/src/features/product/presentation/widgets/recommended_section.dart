@@ -1,12 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
+import 'package:techbox/src/features/product/presentation/controllers/product_controller.dart';
+import 'package:techbox/src/features/product/presentation/states/product_state.dart';
 import 'package:techbox/src/features/product/presentation/widgets/product_card.dart';
 
-class RecommendedSection extends StatelessWidget {
+class RecommendedSection extends ConsumerStatefulWidget  {
   const RecommendedSection({super.key});
 
   @override
+  ConsumerState<RecommendedSection> createState() => _RecommendedSectionState();
+}
+
+class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(productControllerProvider.notifier).getAllProduct();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(productControllerProvider);
     return Column(
       children: [
         Padding(
@@ -32,22 +49,49 @@ class RecommendedSection extends StatelessWidget {
             ],
           ),
         ),
-
-        GridView.builder(
-          itemCount: 4,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            childAspectRatio: 0.55,
-          ),
-          itemBuilder: (context, index) {
-            return const ProductCard();
-          },
+        _buildProductGrid(state),   
+    ]);
+  }
+  Widget _buildProductGrid(ProductState state) {
+    if (state is ProductLoading) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32.0),
+          child: CircularProgressIndicator(),
         ),
-      ],
-    );
+      );
+    }
+    if (state is ProductError) {
+      return Center(child: Text('Lỗi: ${state.message}'));
+    }
+
+    if (state is ProductSuccess) {
+      final products = state.response.data;
+
+      return GridView.builder(
+        itemCount: products.length > 4 ? 4 : products.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.55,
+        ),
+        itemBuilder: (context, index) {
+          final product = products[index];
+          if (product.variants.isEmpty) {
+            return const SizedBox.shrink(); 
+          }
+          final firstVariant = product.variants.first;
+          
+          return ProductCard(
+            product: product,
+            variant: firstVariant
+          );
+        },
+      );
+    }
+    return const SizedBox.shrink();
   }
 }

@@ -1,21 +1,22 @@
 import 'package:equatable/equatable.dart';
+import 'package:techbox/src/features/product/domain/category_model.dart';
 import 'package:techbox/src/features/product/domain/models/product_variant_model.dart';
-import 'package:techbox/src/features/wishlist/presentation/widgets/product_card.dart';
 
 class ProductResponse extends Equatable {
   final String message;
   final List<ProductModel> data;
 
-  const ProductResponse({
-    required this.message, required this.data
-  });
+  const ProductResponse({required this.message, required this.data});
 
   factory ProductResponse.fromJson(Map<String, dynamic> json) {
     return ProductResponse(
-      message: json['message'], 
-      data: json['data'].map()
+      message: json['message'],
+      data: (json['data'] as List).map((e) => ProductModel.fromJson(e)).toList(),
     );
   }
+
+  @override
+  List<Object?> get props => [message, data];
 }
 
 class ProductModel extends Equatable {
@@ -26,14 +27,26 @@ class ProductModel extends Equatable {
   final List<ProductVariantModel> variants;
 
   const ProductModel({
-    required this.id, required this.category, required this.name, required this.description, required this.variants
+    required this.id,
+    required this.category,
+    required this.name,
+    required this.description,
+    required this.variants,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['_id'], category: CategoryModel.fromJson(json['category']), name: json['name'], description: json['description'], variants: json['variants'].map((e) => ProductVariantModel.fromJson(e)).toList());
+      id: json['_id'],
+      category: CategoryModel.fromJson(json['category']),
+      name: json['name'],
+      description: json['description'],
+      variants:
+          (json['variants'] as List)
+              .map((e) => ProductVariantModel.fromJson(e))
+              .toList(),
+    );
   }
 
-
-
+  @override
+  List<Object?> get props => [id, category, name, description, variants];
 }
