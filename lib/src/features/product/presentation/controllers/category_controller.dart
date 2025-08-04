@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/features/product/application/category_service.dart';
 import 'package:techbox/src/features/product/data/data-source/category_data_source.dart';
 import 'package:techbox/src/features/product/data/repository/category_repository.dart';
-import 'package:techbox/src/features/product/presentation/state/category_state.dart';
+import 'package:techbox/src/features/product/presentation/states/category_state.dart';
 
 class CategoryController extends StateNotifier<CategoryState>{
   final CategoryService _service;

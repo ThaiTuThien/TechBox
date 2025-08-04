@@ -9,7 +9,7 @@ class CategoryDataSource {
   final String? baseUrl = dotenv.env['URL_SERVER'];
 
   Future<List<CategoryModel>> getCategories() async {
-    final url = Uri.parse('$baseUrl/api/v1/admin/categories/');
+    final url = Uri.parse('$baseUrl/api/v1/admin/categories');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
