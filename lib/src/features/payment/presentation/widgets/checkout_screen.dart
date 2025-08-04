@@ -326,7 +326,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                   
-                  const SizedBox(width: 110), 
+                  const SizedBox(width: 90), 
                   
                   // Quantity in Circle
                   Container(
