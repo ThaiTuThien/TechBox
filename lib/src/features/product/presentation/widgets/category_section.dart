@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
+import 'package:techbox/src/features/product/presentation/controller/category_controller.dart';
 import 'package:techbox/src/features/product/presentation/widgets/category_card.dart';
 
-class CategorySection extends StatelessWidget {
+class CategorySection extends ConsumerStatefulWidget {
   const CategorySection({super.key});
 
+  @override
+  ConsumerState<CategorySection> createState() => _CategorySection();
+}
+
+
+class _CategorySection extends ConsumerState<CategorySection> {
+  
+  Future<void> onGetCategory() async {
+    final state = await ref.watch(categoryControllerProvider.notifier).fetchCategories();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 2));
 
     if (!mounted) return;
-    if (isTokenValid(token!)) {
+    if (token != null && isTokenValid(token)) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => MainNavigationScreen(name: name!)));
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => OnBoardScreen()));
