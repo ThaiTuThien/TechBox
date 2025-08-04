@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class LocationDataSource {
   Future<List<ProvinceDto>> getProvinces() async {
     final baseURL = dotenv.env['URL_SERVER'];
-    final url = Uri.parse('$baseURL/api/v1/location/provinces');
+    final url = Uri.parse('$baseURL/api/v1/provinces');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
