@@ -7,7 +7,7 @@ class RegisterRepository {
 
   RegisterRepository(this._dataSource);
 
-  Future<Either<String, String>> register (RegisterDto dto) async {
+  Future<Either<String, String>> register(RegisterDto dto) async {
     try {
       final data = await _dataSource.register(dto);
       return Right(data);
