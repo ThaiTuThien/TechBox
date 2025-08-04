@@ -8,11 +8,7 @@ class ButtonGoogleComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: () {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => MainNavigationScreen()),
-          (Route<dynamic> route) => false,
-        );
+        
       },
       label: Text(
         'Đăng nhập với Google',

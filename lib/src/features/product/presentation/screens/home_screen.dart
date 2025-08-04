@@ -7,7 +7,8 @@ import 'package:techbox/src/features/product/presentation/widgets/recommended_se
 import 'package:techbox/src/features/product/presentation/widgets/search_bar_section.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String? name;
+  const HomeScreen({super.key, this.name});
 
   @override
   State<HomeScreen> createState() => _MyWidgetState();
@@ -25,7 +26,7 @@ class _MyWidgetState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GreetingHeader(username: 'Nhan Luong'),
+                GreetingHeader(username: widget.name!),
                 SearchBarSection(),
                 CustomCarousel(),
                 CategorySection(),
