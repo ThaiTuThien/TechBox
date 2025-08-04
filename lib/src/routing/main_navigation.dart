@@ -7,7 +7,8 @@ import 'package:techbox/src/features/product/presentation/screens/home_screen.da
 import 'package:techbox/src/features/wishlist/presentation/widgets/favorite_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  final String name;
+  const MainNavigationScreen({super.key, required this.name});
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
@@ -16,19 +17,19 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
   late PageController _pageController;
-
-  final List<Widget> _pages = [
-    HomeScreen(),
-    CheckoutPage(),
-    FavoriteScreen(),
-    CartPage(),
-    AccountPage(),
-  ];
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    _pages = [
+    HomeScreen(name: widget.name),
+    CheckoutPage(),
+    FavoriteScreen(),
+    CartPage(),
+    AccountPage(),
+  ];
   }
 
   @override
@@ -51,6 +52,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) {

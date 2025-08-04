@@ -19,11 +19,9 @@ class VerifyEmailDataSource {
       if (decoded['message'] == 'Success') {
         final data = decoded['data'];
         final accessToken = data['accessToken'];
-        final name = data['name'];
 
         final pref = await SharedPreferences.getInstance();
         await pref.setString('accessToken', accessToken);
-        await pref.setString('name', name);
       }
       return decoded['message'];
     } else {

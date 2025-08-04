@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:techbox/src/common_widgets/notifcation.dart';
 import 'package:techbox/src/features/auth/login/data/dtos/login_dto.dart';
 import 'package:techbox/src/features/auth/login/presentation/controllers/login_controllers.dart';
@@ -11,7 +12,7 @@ import 'package:techbox/src/features/auth/presentation/divided_section/or.dart';
 import 'package:techbox/src/core/constants.dart';
 import 'package:techbox/src/features/auth/forgot_password/presentation/forgot_password.dart';
 import 'package:techbox/src/features/auth/register/presentation/wiggets/signup_screen.dart';
-import 'package:techbox/src/features/product/presentation/screens/home_screen.dart';
+import 'package:techbox/src/routing/main_navigation.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -43,9 +44,15 @@ class _LoginScreen extends ConsumerState<LoginScreen> {
 
     final state = ref.read(loginControllerProvider);
     if (state is LoginSuccess) {
+      final name = state.response.name;
+      final token = state.response.accessToken;
+      final pref = await SharedPreferences.getInstance();
+      await pref.setString('accessToken', token);
+      await pref.setString('name', name);
+      
       NotificationComponent(title: 'Thành công', description: 'Đăng nhập thành công', type: 'success').build(context);
       if (!mounted) return;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => MainNavigationScreen(name: name)));
     }
     else if (state is LoginError) {
       NotificationComponent(title: 'Thất bại', description: state.message, type: 'error').build(context);

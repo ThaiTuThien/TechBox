@@ -15,7 +15,7 @@ class LoginControllers extends StateNotifier<LoginState>{
     final data = await _services.login(dto);
     data.fold(
       (err) => state = LoginError(err), 
-      (res) => state = LoginSuccess(res.message)
+      (res) => state = LoginSuccess(res)
     );
   }
 }
