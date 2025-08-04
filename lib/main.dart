@@ -3,10 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/common_widgets/splash_screen.dart';
 
+
 Future<void> main() async {
   await dotenv.load(fileName: '.env');
   runApp(ProviderScope(child: MainApp()));
-
 }
 
 class MainApp extends StatelessWidget {
