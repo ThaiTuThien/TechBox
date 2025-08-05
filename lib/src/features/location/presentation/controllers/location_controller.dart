@@ -23,7 +23,6 @@ class LocationController extends StateNotifier<LocationState> {
   }
 
   Future<void> fetchDistricts(int provinceCode) async {
-    // Giữ lại trạng thái thành công hiện tại để truy cập dữ liệu của tỉnh
     final currentState = state;
     if (currentState is LocationSuccess) {
       state = LocationLoading();
@@ -32,11 +31,10 @@ class LocationController extends StateNotifier<LocationState> {
         result.fold((failure) => state = LocationError(failure.toString()), (
           districts,
         ) {
-          // Xây dựng trạng thái thành công mới với dữ liệu cập nhật
           state = currentState.copyWith(
             districts: districts,
             selectedProvinceCode: provinceCode,
-            wards: [], // Xóa danh sách phường/xã cũ
+            wards: [],
             selectedDistrictCode: null,
             selectedDistrictName: null,
             selectedWardCode: null,
@@ -58,7 +56,6 @@ class LocationController extends StateNotifier<LocationState> {
         result.fold((failure) => state = LocationError(failure.toString()), (
           wards,
         ) {
-          // Xây dựng trạng thái thành công mới với dữ liệu cập nhật
           state = currentState.copyWith(
             wards: wards,
             selectedDistrictCode: districtCode,
@@ -79,12 +76,11 @@ class LocationController extends StateNotifier<LocationState> {
         (p) => p.code == code,
         orElse: () => currentState.provinces.first,
       );
-      // Sử dụng copyWith để tạo trạng thái mới
       state = currentState.copyWith(
         selectedProvinceCode: code,
         selectedProvinceName: province.name,
-        districts: [], // Xóa danh sách quận/huyện
-        wards: [], // Xóa danh sách phường/xã
+        districts: [],
+        wards: [],
         selectedDistrictCode: null,
         selectedDistrictName: null,
         selectedWardCode: null,
@@ -104,7 +100,7 @@ class LocationController extends StateNotifier<LocationState> {
         state = currentState.copyWith(
           selectedDistrictCode: code,
           selectedDistrictName: district.name,
-          wards: [], // Xóa danh sách phường/xã
+          wards: [],
           selectedWardCode: null,
           selectedWardName: null,
         );
