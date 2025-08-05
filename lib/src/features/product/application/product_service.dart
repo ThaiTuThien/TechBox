@@ -25,4 +25,13 @@ class ProductService {
       return Left(e.toString());
     }
   }
+
+  Future<Either<String, ProductResponse>> getProductByCategoryId(String categoryId) async {
+    try {
+      return await _repo.getProductByCategoryId(categoryId);
+    } 
+    catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

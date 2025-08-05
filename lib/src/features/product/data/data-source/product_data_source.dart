@@ -37,4 +37,20 @@ class ProductDataSource {
       throw Exception(message);
     }
   }
+
+  Future<ProductResponse> getProductsByCategoryId(String categoryId) async {
+    final baseURL = dotenv.env['URL_SERVER'];
+    final url = Uri.parse('$baseURL/api/v1/products/filter?categoryId=$categoryId');
+    final response = await http.get(url, headers: {'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      final decoded = jsonDecode(response.body);
+      return ProductResponse.fromJson(decoded); 
+    } 
+    else {
+      final decoded = jsonDecode(response.body);
+      final message = decoded['message'];
+      throw Exception(message);
+    }
+  }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:techbox/src/common_widgets/notifcation.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
+import 'package:techbox/src/features/cart/application/cart_services.dart';
+import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
 import 'package:techbox/src/features/product/domain/models/product_variant_model.dart';
 import 'package:techbox/src/features/product/presentation/controllers/product_controller.dart';
 import 'package:techbox/src/features/product/presentation/states/product_state.dart';
@@ -277,7 +280,20 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final cartAddToCart = CartItem(
+                      variantId: _selectedVariant!.id,
+                      productName: productDetail.name, 
+                      imageUrl: _selectedVariant!.images.first, 
+                      price: _selectedVariant!.price, 
+                      colorName: _selectedVariant!.color.colorName, 
+                      colorCode: _selectedVariant!.color.colorCode, 
+                      storage: _selectedVariant!.storage, 
+                      quantity: _quantity
+                    );
+                    await ref.read(cartServiceProvider).addToCart(cartAddToCart);
+                    NotificationComponent(title: 'Thành công', description: 'Vui lòng kiểm tra giỏ hàng', type: 'success').build(context);
+                  },
                   icon: const Icon(Icons.shopping_bag_outlined),
                   label: const Text('Thêm vào giỏ'),
                   style: ElevatedButton.styleFrom(

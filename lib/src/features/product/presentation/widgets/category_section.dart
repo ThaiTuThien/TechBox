@@ -16,7 +16,7 @@ class CategorySection extends ConsumerStatefulWidget {
 class _CategorySection extends ConsumerState<CategorySection> {
   
   Future<void> onGetCategory() async {
-    final state = await ref.watch(categoryControllerProvider.notifier).fetchCategories();
+    await ref.watch(categoryControllerProvider.notifier).fetchCategoriesAdmin();
   }
   
   @override
