@@ -141,7 +141,7 @@ class _PopularSectionState extends ConsumerState<PopularSection> {
         return const Padding(padding: EdgeInsets.all(32.0), child: Center(child: Text('Không có sản phẩm trong danh mục này.')));
     }
     return GridView.builder(
-        itemCount: products.length > 4 ? 10 : products.length,
+        itemCount: products.length,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16, mainAxisSpacing: 16, childAspectRatio: 0.55),

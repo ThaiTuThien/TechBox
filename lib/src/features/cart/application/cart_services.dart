@@ -52,6 +52,20 @@ class CartService {
     cartItems.removeWhere((item) => item.variantId == variantId);
     await _saveCart(cartItems);
   }
+
+  Future<void> clearCart() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.remove(_cartKey);
+  }
+
+  Future<int> getTotalPrice() async {
+    final cartItems = await getCart();
+    int total = 0;
+    for (var item in cartItems) {
+      total += item.price * item.quantity;
+    }
+    return total;
+  }
 }
 
 final cartServiceProvider = Provider((ref) => CartService());
