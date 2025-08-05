@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
-import 'package:techbox/src/features/product/domain/models/product_model.dart';
 import 'package:techbox/src/features/product/presentation/controllers/product_controller.dart';
 import 'package:techbox/src/features/product/presentation/states/product_state.dart';
 import 'package:techbox/src/features/product/presentation/widgets/product_card.dart';
@@ -19,13 +18,13 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(productControllerProvider.notifier).getAllProduct();
+      ref.read(recommendedProductsProvider.notifier).getAllProduct();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(productControllerProvider);
+    final state = ref.watch(recommendedProductsProvider);
     return Column(
       children: [
         Padding(
@@ -60,6 +59,7 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
         child: Padding(
           padding: EdgeInsets.all(32.0),
           child: CircularProgressIndicator(),
+      
         ),
       );
     }
@@ -92,7 +92,7 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
             variant: firstVariant,
             onTap: () async {
               await Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailScreen(slug: firstVariant.slug)));
-              ref.read(productControllerProvider.notifier).getAllProduct();
+              ref.read(recommendedProductsProvider.notifier).getAllProduct();
             },
             
           );

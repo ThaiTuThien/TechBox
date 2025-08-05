@@ -27,4 +27,14 @@ class ProductRepository {
       return Left(e.toString());
     }
   }
+
+  Future<Either<String, ProductResponse>> getProductByCategoryId(String categoryId) async {
+    try {
+      final data = await _dataSource.getProductsByCategoryId(categoryId);
+      return Right(data);
+    }
+    catch (e) {
+      return Left(e.toString());
+    }
+  }
 }

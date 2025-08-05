@@ -26,9 +26,39 @@ class ProductControllers extends StateNotifier<ProductState>{
       (res) => state = ProductSlugSuccess(res)
     );
   }
+
+  Future<void> getProductByCategoryId(String categoryId) async {
+    state = ProductLoading();
+    final data = await _services.getProductByCategoryId(categoryId);
+    data.fold(
+      (err) => state = ProductError(err), 
+      (res) => state = ProductSuccess(res)
+    );
+  }
 }
 
 final productControllerProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {
+  final datasource = ProductDataSource();
+  final repo = ProductRepository(datasource);
+  final services = ProductService(repo);
+  return ProductControllers(services);
+});
+
+final recommendedProductsProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {
+  final datasource = ProductDataSource(); // Giả sử bạn đã có provider cho datasource
+  final repo = ProductRepository(datasource);
+  final services = ProductService(repo);
+  return ProductControllers(services);
+});
+
+final popularProductsProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {
+  final datasource = ProductDataSource();
+  final repo = ProductRepository(datasource);
+  final services = ProductService(repo);
+  return ProductControllers(services);
+});
+
+final productsProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {
   final datasource = ProductDataSource();
   final repo = ProductRepository(datasource);
   final services = ProductService(repo);

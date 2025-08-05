@@ -71,6 +71,8 @@ class _ExpandableHtmlDescriptionState
               color: AppColors.primary,
               fontWeight: FontWeight.bold,
               fontSize: 16,
+              decoration: TextDecoration.underline,
+              decorationColor: AppColors.primary,
             ),
           ),
         ),
