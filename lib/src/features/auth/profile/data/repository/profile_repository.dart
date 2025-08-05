@@ -16,9 +16,24 @@ class ProfileRepository {
     }
   }
 
-  Future<Either<String, void>> updateProfile(String name, String phoneNumber, String address) async {
+  Future<Either<String, void>> updateProfile({
+    required String name,
+    required String phoneNumber,
+    required String street,
+    required String ward,
+    required String district,
+    required String city,
+  }) async {
     try {
-      await _dataSource.updateProfile(name, phoneNumber, address);
+      // TRUYỀN CÁC THAM SỐ ĐÃ ĐẶT TÊN
+      await _dataSource.updateProfile(
+        name: name,
+        phoneNumber: phoneNumber,
+        street: street,
+        ward: ward,
+        district: district,
+        city: city,
+      );
       return const Right(null);
     } catch (e) {
       return Left(e.toString());
