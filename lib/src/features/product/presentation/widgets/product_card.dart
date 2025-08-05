@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:techbox/src/common_widgets/notifcation.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
+import 'package:techbox/src/features/cart/application/cart_services.dart';
+import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
 import 'dart:async';
 import 'package:techbox/src/features/product/domain/models/product_model.dart';
 import 'package:techbox/src/features/product/domain/models/product_variant_model.dart';
 import 'package:techbox/src/utils/color_formatted.dart';
 import 'package:techbox/src/utils/currency_formatted.dart';
 
-class ProductCard extends StatefulWidget {
+class ProductCard extends ConsumerStatefulWidget {
   final ProductModel product;
   final ProductVariantModel variant;
   final VoidCallback? onTap;
@@ -14,10 +18,10 @@ class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.product, required this.variant, this.onTap});
 
   @override
-  State<ProductCard> createState() => _ProductCardState();
+  ConsumerState<ProductCard> createState() => _ProductCardState();
 }
 
-class _ProductCardState extends State<ProductCard> {
+class _ProductCardState extends ConsumerState<ProductCard> {
   double _favScale = 1.0;
   double _cartScale = 1.0;
 
@@ -29,10 +33,27 @@ class _ProductCardState extends State<ProductCard> {
 
   void _animateCart() async {
     setState(() => _cartScale = 1.2);
-    await Future.delayed(const Duration(milliseconds: 100));
-    setState(() => _cartScale = 1.0);
+    Future.delayed(const Duration(milliseconds: 100), () {
+        if (mounted) setState(() => _cartScale = 1.0);
+    });
   }
 
+  Future<void> _handleAddToCart() async {
+    _animateCart();
+    final newItem = CartItem(
+      variantId: widget.variant.id,
+      productName: widget.product.name,
+      imageUrl: widget.variant.images.isNotEmpty ? widget.variant.images.first : '',
+      price: widget.variant.price,
+      colorName: widget.variant.color.colorName,
+      colorCode: widget.variant.color.colorCode,
+      storage: widget.variant.storage,
+      quantity: 1, 
+    );
+    await ref.read(cartServiceProvider).addToCart(newItem);
+    // ignore: use_build_context_synchronously
+    NotificationComponent(title: 'Thành công', description: 'Vui lòng kiểm tra giỏ hàng', type: 'success').build(context);
+  }
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
@@ -170,7 +191,7 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   const Spacer(),
                   GestureDetector(
-                    onTap: _animateCart,
+                    onTap: _handleAddToCart,
                     child: AnimatedScale(
                       scale: _cartScale,
                       duration: const Duration(milliseconds: 120),

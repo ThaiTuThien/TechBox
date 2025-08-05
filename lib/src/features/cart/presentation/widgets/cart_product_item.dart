@@ -12,8 +12,8 @@ class CartProductItem extends StatelessWidget {
   final int price;
   final int quantity;
   final String imageUrl;
-  final Function(int) onQuantityChanged;
-  final VoidCallback? onDelete;
+  final ValueChanged<int> onQuantityChanged;
+  final VoidCallback onDelete;
 
   const CartProductItem({
     super.key,
@@ -25,7 +25,7 @@ class CartProductItem extends StatelessWidget {
     required this.quantity,
     required this.imageUrl,
     required this.onQuantityChanged,
-    this.onDelete,
+    required this.onDelete,
   });
 
   @override
@@ -143,55 +143,6 @@ class CartProductItem extends StatelessWidget {
         ],
       ),
     );
-
-    if (onDelete != null) {
-      return Dismissible(
-        key: Key(productId),
-        direction: DismissDirection.endToStart,
-        background: Container(
-          alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 33),
-          margin: const EdgeInsets.only(bottom: 8),
-          decoration: BoxDecoration(
-            color: Colors.red.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(
-            Icons.delete,
-            color: Color.fromARGB(255, 231, 71, 81),
-            size: 32,
-          ),
-        ),
-        confirmDismiss: (direction) async {
-          return await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Xác nhận xóa'),
-                content: const Text('Bạn có chắc chắn muốn xóa sản phẩm này?'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text('Hủy'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(true),
-                    child: const Text(
-                      'Xóa',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        onDismissed: (direction) => onDelete!(),
-        child: productItem,
-      );
-    }
-
     return productItem;
   }
-
 } 
