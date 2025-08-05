@@ -20,7 +20,7 @@ class CategoryList extends StatelessWidget {
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side:
@@ -31,7 +31,10 @@ class CategoryList extends StatelessWidget {
           backgroundColor: isSelected ? Color(0xFF2C4E4A) : Colors.white,
           foregroundColor: isSelected ? Colors.white : Colors.black,
         ),
-        child: Text(title),
+        child: Text(title, style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500
+        ),),
       ),
     );
   }

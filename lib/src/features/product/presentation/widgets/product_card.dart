@@ -180,8 +180,8 @@ class _ProductCardState extends State<ProductCard> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black,
-                              blurRadius: 8,
+                              color: Colors.grey,
+                              blurRadius: 6,
                               offset: const Offset(0, 2),
                             ),
                           ],
