@@ -8,6 +8,7 @@ class CartProductItem extends StatelessWidget {
   final String productId;
   final String productName;
   final String productColor;
+  final String storage;
   final Color colorValue;
   final int price;
   final int quantity;
@@ -20,6 +21,7 @@ class CartProductItem extends StatelessWidget {
     required this.productId,
     required this.productName,
     required this.productColor,
+    required this.storage,
     required this.colorValue,
     required this.price,
     required this.quantity,
@@ -56,7 +58,11 @@ class CartProductItem extends StatelessWidget {
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Icon(Icons.phone_iphone, size: 40, color: Colors.grey),
+                    child: const Icon(
+                      Icons.phone_iphone,
+                      size: 40,
+                      color: Colors.grey,
+                    ),
                   );
                 },
                 loadingBuilder: (context, child, loadingProgress) {
@@ -85,7 +91,7 @@ class CartProductItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  productName,
+                  productName + " " + storage,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -97,7 +103,11 @@ class CartProductItem extends StatelessWidget {
                   children: [
                     const Text(
                       'Màu: ',
-                      style: TextStyle(fontSize: 14, color: AppColors.primary, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                     const SizedBox(width: 15),
                     Container(
@@ -114,7 +124,7 @@ class CartProductItem extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black87,
-                        fontWeight: FontWeight.w500
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -145,4 +155,4 @@ class CartProductItem extends StatelessWidget {
     );
     return productItem;
   }
-} 
+}

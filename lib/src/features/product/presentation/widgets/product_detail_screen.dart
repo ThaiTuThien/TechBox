@@ -22,18 +22,44 @@ class ProductDetailScreen extends ConsumerStatefulWidget {
       _ProductDetailScreenState();
 }
 
-class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
+class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen>
+    with SingleTickerProviderStateMixin {
   ProductVariantModel? _selectedVariant;
   var _quantity = 1;
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
           .read(productControllerProvider.notifier)
           .getProductBySlug(widget.slug);
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onButtonPressed(VoidCallback? onTap) {
+    if (onTap != null) {
+      _animationController.forward().then((_) {
+        _animationController.reverse();
+        onTap();
+      });
+    }
   }
 
   void _incrementQuantity() {
@@ -52,6 +78,9 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     }
   }
 
+  bool get _canIncrement =>
+      _selectedVariant != null && _quantity < _selectedVariant!.stock;
+  bool get _canDecrement => _quantity > 1;
 
   @override
   Widget build(BuildContext context) {
@@ -67,15 +96,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
 
     if (state is ProductSlugSuccess) {
       final productDetail = state.product.data;
-      _selectedVariant ??= productDetail.variants.isNotEmpty 
-                            ? productDetail.variants.first 
-                            : null;
+      _selectedVariant ??=
+          productDetail.variants.isNotEmpty
+              ? productDetail.variants.first
+              : null;
       if (_selectedVariant == null) {
         return const Scaffold(
           body: Center(child: Text("Sản phẩm không có biến thể nào.")),
         );
       }
-  
+
       return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -86,7 +116,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             icon: const Icon(Icons.arrow_back, color: Colors.black),
           ),
           title: Text(
-            productDetail.name,
+            productDetail.name + " " + _selectedVariant!.storage,
             style: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -110,7 +140,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ProductImageCarousel(images: _selectedVariant!.images),
                 const SizedBox(height: 24),
                 Text(
-                  _selectedVariant!.slug,
+                  productDetail.name +
+                      " " +
+                      _selectedVariant!.storage +
+                      " " +
+                      _selectedVariant!.color.colorName,
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -124,9 +158,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     const SizedBox(width: 4),
                     Text(
                       _selectedVariant!.reviews.isEmpty
-                          ? '0.0' 
-                          : (_selectedVariant!.reviews.fold(0, (a, b) => a + b.rating) /
-                                  _selectedVariant!.reviews.length).toStringAsFixed(1),
+                          ? '0.0'
+                          : (_selectedVariant!.reviews.fold(
+                                    0,
+                                    (a, b) => a + b.rating,
+                                  ) /
+                                  _selectedVariant!.reviews.length)
+                              .toStringAsFixed(1),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -145,7 +183,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 ),
                 const SizedBox(height: 16),
                 ExpandableHtmlDescription(
-                  htmlContent: productDetail.description
+                  htmlContent: productDetail.description,
                 ),
                 const SizedBox(height: 24),
                 ProductVariantSection(
@@ -157,6 +195,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     });
                   },
                 ),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -168,49 +207,102 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         color: AppColors.primary,
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE0E0E0),
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              _quantity > 1 ? _decrementQuantity() : null;
-                            },
-                            icon: const Icon(
-                              Icons.remove,
-                              size: 20,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          Text(
-                            _quantity.toString(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: AppColors.primary,
-                              shape: BoxShape.circle,
-                            ),
-                            child: IconButton(
-                              onPressed: () {
-                                _quantity < _selectedVariant!.stock ? _incrementQuantity() : null;
-                              },
-                              icon: const Icon(
-                                Icons.add,
-                                size: 20,
-                                color: Colors.white,
+                    AnimatedBuilder(
+                      animation: _scaleAnimation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _scaleAnimation.value,
+                          child: Row(
+                            children: [
+                              // Minus Button
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(8),
+                                  onTap:
+                                      _canDecrement
+                                          ? () => _onButtonPressed(
+                                            () => _decrementQuantity(),
+                                          )
+                                          : null,
+                                  child: Container(
+                                    width: 28,
+                                    height: 28,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFE0E0E0),
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.3,
+                                          ),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 12,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              // Quantity Display
+                              SizedBox(
+                                width: 28,
+                                height: 32,
+                                child: Center(
+                                  child: Text(
+                                    '$_quantity',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Plus Button
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(8),
+                                  onTap:
+                                      _canIncrement
+                                          ? () => _onButtonPressed(
+                                            () => _incrementQuantity(),
+                                          )
+                                          : null,
+                                  child: Container(
+                                    width: 28,
+                                    height: 28,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.primary.withValues(
+                                            alpha: 0.3,
+                                          ),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -283,16 +375,22 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   onPressed: () async {
                     final cartAddToCart = CartItem(
                       variantId: _selectedVariant!.id,
-                      productName: productDetail.name, 
-                      imageUrl: _selectedVariant!.images.first, 
-                      price: _selectedVariant!.price, 
-                      colorName: _selectedVariant!.color.colorName, 
-                      colorCode: _selectedVariant!.color.colorCode, 
-                      storage: _selectedVariant!.storage, 
-                      quantity: _quantity
+                      productName: productDetail.name,
+                      imageUrl: _selectedVariant!.images.first,
+                      price: _selectedVariant!.price,
+                      colorName: _selectedVariant!.color.colorName,
+                      colorCode: _selectedVariant!.color.colorCode,
+                      storage: _selectedVariant!.storage,
+                      quantity: _quantity,
                     );
-                    await ref.read(cartServiceProvider).addToCart(cartAddToCart);
-                    NotificationComponent(title: 'Thành công', description: 'Vui lòng kiểm tra giỏ hàng', type: 'success').build(context);
+                    await ref
+                        .read(cartServiceProvider)
+                        .addToCart(cartAddToCart);
+                    NotificationComponent(
+                      title: 'Thành công',
+                      description: 'Vui lòng kiểm tra giỏ hàng',
+                      type: 'success',
+                    ).build(context);
                   },
                   icon: const Icon(Icons.shopping_bag_outlined),
                   label: const Text('Thêm vào giỏ'),
@@ -332,7 +430,7 @@ Widget _buildInfoChip(
     decoration: BoxDecoration(
       color: backgroundColor,
       borderRadius: BorderRadius.circular(16),
-      border: Border.all(color: color.withOpacity(0.5)),
+      border: Border.all(color: color.withValues(alpha: 0.5)),
     ),
     child: Column(
       children: [
