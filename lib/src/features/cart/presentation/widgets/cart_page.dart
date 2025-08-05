@@ -1,120 +1,148 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
+import 'package:techbox/src/features/cart/application/cart_services.dart';
+import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
 import 'package:techbox/src/features/cart/presentation/widgets/cart_empty.dart';
 import 'package:techbox/src/features/cart/presentation/widgets/cart_product_item.dart';
 import 'package:techbox/src/features/cart/presentation/widgets/cart_bottom_section.dart';
-import 'package:techbox/src/features/cart/data/mock_cart_data.dart';
-import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
+import 'package:techbox/src/utils/color_formatted.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends ConsumerStatefulWidget {
   const CartPage({super.key});
 
   @override
-  State<CartPage> createState() => _CartPageState();
+  ConsumerState<CartPage> createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> {
-  List<CartProduct> cartProducts = [];
+class _CartPageState extends ConsumerState<CartPage> {
+  List<CartItem> cartProducts = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // Load mock data - replace this with API call later
     _loadCartData();
   }
 
-  void _loadCartData() {
-    // TODO: Replace with API call
-    // Example: cartProducts = await cartRepository.getCartItems();
-    setState(() {
-      cartProducts = MockCartData.getMockCartProducts();
-    });
+  Future<void> _loadCartData() async {
+    final items = await ref.read(cartServiceProvider).getCart();
+    if (mounted) {
+      setState(() {
+        cartProducts = items;
+        _isLoading = false;
+      });
+    }
+  }
+  Future<void> _handleQuantityChanged(String variantId, int newQuantity) async {
+    await ref
+        .read(cartServiceProvider)
+        .updateItemQuantity(variantId, newQuantity);
+    _loadCartData();
   }
 
-  void _updateProductQuantity(String productId, int newQuantity) {
-    setState(() {
-      final index = cartProducts.indexWhere((product) => product.id == productId);
-      if (index != -1) {
-        cartProducts[index] = cartProducts[index].copyWith(quantity: newQuantity);
-      }
-    });
+  Future<void> _handleDelete(String variantId, String productName) async {
+    await ref.read(cartServiceProvider).removeFromCart(variantId);
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('Đã xóa sản phẩm $productName')));
+    _loadCartData(); 
   }
 
-  void _deleteProduct(String productId) {
-    setState(() {
-      final index = cartProducts.indexWhere((product) => product.id == productId);
-      if (index != -1) {
-        cartProducts[index] = cartProducts[index].copyWith(quantity: 0);
-      }
-    });
+  int calTotalPrice() {
+    if (cartProducts.isEmpty) return 0;
+    return cartProducts.fold(
+      0,
+      (total, currentItem) =>
+          total + (currentItem.price * currentItem.quantity),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final activeProducts = MockCartData.getActiveProducts(cartProducts);
-    final totalPrice = MockCartData.getTotalPrice(cartProducts);
-    final isCartEmpty = MockCartData.isCartEmpty(cartProducts);
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (cartProducts.isEmpty) {
+      return const CartEmpty();
+    }
 
-    return isCartEmpty
-        ? const CartEmpty()
-        : Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBarComponent(
-              title: 'Giỏ Hàng',
-              showBackButton: false,
-              showBottomBorder: false,
-              onBackPressed: () => Navigator.pop(context),
-            ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBarComponent(
+        title: 'Giỏ Hàng',
+        showBackButton: false,
+        onBackPressed: () => Navigator.pop(context),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                itemCount: cartProducts.length,
+                itemBuilder: (context, index) {
+                  final product = cartProducts[index];
+                  return Dismissible(
+                    key: Key(product.variantId),
+                    direction:
+                        DismissDirection
+                            .endToStart, 
+                    onDismissed: (direction) {
+                      _handleDelete(product.variantId, product.productName);
+                    },
+                    // Background khi vuốt
+                    background: Container(
+                      color: Colors.red,
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 8,
                       ),
                       child: Column(
                         children: [
-                          ...activeProducts.map((product) => Column(
-                            children: [
-                              CartProductItem(
-                                productId: product.id,
-                                productName: product.name,
-                                productColor: product.color,
-                                colorValue: product.colorValue,
-                                price: product.price,
-                                quantity: product.quantity,
-                                imageUrl: product.imageUrl,
-                                onQuantityChanged: (newQuantity) {
-                                  _updateProductQuantity(product.id, newQuantity);
-                                },
-                                onDelete: () {
-                                  _deleteProduct(product.id);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Đã xóa sản phẩm ${product.color}')),
-                                  );
-                                },
-                              ),
-                              if (activeProducts.last != product) _divider(),
-                            ],
-                          )),
-                          const SizedBox(height: 95),
+                          CartProductItem(
+                            productId: product.variantId,
+                            productName: product.productName,
+                            productColor: product.colorName,
+                            price: product.price,
+                            colorValue: colorFromHex(product.colorCode),
+                            quantity: product.quantity,
+                            imageUrl: product.imageUrl,
+                            onQuantityChanged: (newQuantity) {
+                              _handleQuantityChanged(
+                                product.variantId,
+                                newQuantity,
+                              );
+                            },
+                            onDelete: () {
+                              _handleDelete(
+                                product.variantId,
+                                product.productName,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          if (index < cartProducts.length - 1) _divider(),
                         ],
                       ),
                     ),
-                  ),
-                  CartBottomSection(totalPrice: totalPrice),
-                ],
+                  );
+                },
               ),
             ),
-          );
-  }
-
-  Widget _divider() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
-      child: Divider(height: 1, color: Color.fromARGB(255, 230, 230, 230)),
+            CartBottomSection(totalPrice: calTotalPrice()),
+          ],
+        ),
+      ),
     );
   }
-} 
+
+  Widget _divider() =>
+      const Divider(height: 1, color: Color.fromARGB(255, 230, 230, 230));
+}
