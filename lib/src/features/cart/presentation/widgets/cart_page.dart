@@ -34,6 +34,7 @@ class _CartPageState extends ConsumerState<CartPage> {
       });
     }
   }
+
   Future<void> _handleQuantityChanged(String variantId, int newQuantity) async {
     await ref
         .read(cartServiceProvider)
@@ -47,7 +48,7 @@ class _CartPageState extends ConsumerState<CartPage> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('Đã xóa sản phẩm $productName')));
-    _loadCartData(); 
+    _loadCartData();
   }
 
   int calTotalPrice() {
@@ -73,6 +74,7 @@ class _CartPageState extends ConsumerState<CartPage> {
       appBar: AppBarComponent(
         title: 'Giỏ Hàng',
         showBackButton: false,
+        showBottomBorder: false,
         onBackPressed: () => Navigator.pop(context),
       ),
       body: SafeArea(
@@ -80,15 +82,12 @@ class _CartPageState extends ConsumerState<CartPage> {
           children: [
             Expanded(
               child: ListView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 16),
                 itemCount: cartProducts.length,
                 itemBuilder: (context, index) {
                   final product = cartProducts[index];
                   return Dismissible(
                     key: Key(product.variantId),
-                    direction:
-                        DismissDirection
-                            .endToStart, 
+                    direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       _handleDelete(product.variantId, product.productName);
                     },
@@ -109,6 +108,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                           CartProductItem(
                             productId: product.variantId,
                             productName: product.productName,
+                            storage: product.storage,
                             productColor: product.colorName,
                             price: product.price,
                             colorValue: colorFromHex(product.colorCode),
