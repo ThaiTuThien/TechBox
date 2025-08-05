@@ -116,7 +116,7 @@ class _ProductListScreenState extends ConsumerState<ProductListScreen> {
         children: [
           Expanded(
             child: TextField(
-              controller: _searchController, // Gán controller
+              controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Tìm kiếm sản phẩm...',
                 prefixIcon: const Icon(Icons.search),

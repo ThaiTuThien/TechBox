@@ -27,6 +27,22 @@ class ProductVariantModel extends Equatable {
     required this.reviews
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'color': color,
+      'product': product,
+      'price': price,
+      'rating': rating,
+      'status': status,
+      'storage': storage,
+      'slug': slug,
+      'images': images,
+      'reviews': reviews,
+      'stock': stock
+    };
+  }
+
   factory ProductVariantModel.fromJson(Map<String, dynamic> json) {
     var reviewsList = <ReviewModel>[];
     if (json['reviews'] != null) {
