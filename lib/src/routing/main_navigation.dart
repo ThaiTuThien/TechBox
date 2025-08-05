@@ -4,6 +4,7 @@ import 'package:techbox/src/features/account/presentation/widgets/account_list/a
 import 'package:techbox/src/features/cart/presentation/widgets/cart.dart';
 import 'package:techbox/src/features/payment/presentation/widgets/checkout_screen.dart';
 import 'package:techbox/src/features/product/presentation/screens/home_screen.dart';
+import 'package:techbox/src/features/product/presentation/screens/product_list_screen.dart';
 import 'package:techbox/src/features/wishlist/presentation/widgets/favorite_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     _pageController = PageController();
     _pages = [
     HomeScreen(name: widget.name),
-    CheckoutPage(),
+    ProductListScreen(),
     FavoriteScreen(),
     CartPage(),
     AccountPage(),

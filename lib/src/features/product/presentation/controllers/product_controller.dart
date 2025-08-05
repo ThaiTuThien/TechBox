@@ -57,3 +57,10 @@ final popularProductsProvider = StateNotifierProvider<ProductControllers, Produc
   final services = ProductService(repo);
   return ProductControllers(services);
 });
+
+final productsProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {
+  final datasource = ProductDataSource();
+  final repo = ProductRepository(datasource);
+  final services = ProductService(repo);
+  return ProductControllers(services);
+});

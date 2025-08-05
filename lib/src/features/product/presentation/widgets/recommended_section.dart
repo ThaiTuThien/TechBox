@@ -59,6 +59,7 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
         child: Padding(
           padding: EdgeInsets.all(32.0),
           child: CircularProgressIndicator(),
+      
         ),
       );
     }
