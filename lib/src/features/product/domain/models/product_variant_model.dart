@@ -11,7 +11,7 @@ class ProductVariantModel extends Equatable {
   final int stock;
   final String slug;
   final List<String> images;
-  final List<String> reviews;
+  final List<ReviewModel> reviews;
 
   const ProductVariantModel({
     required this.id,
@@ -28,6 +28,13 @@ class ProductVariantModel extends Equatable {
   });
 
   factory ProductVariantModel.fromJson(Map<String, dynamic> json) {
+    var reviewsList = <ReviewModel>[];
+    if (json['reviews'] != null) {
+      json['reviews'].forEach((v) {
+        reviewsList.add(ReviewModel.fromJson(v));
+      });
+    }
+
     return ProductVariantModel(
       id: json['_id'], 
       color: ColorModel.fromJson(json['color']), 
@@ -39,7 +46,7 @@ class ProductVariantModel extends Equatable {
       stock: json['stock_quantity'], 
       slug: json['slug'], 
       images: List<String>.from(json['images']),
-      reviews: List<String>.from(json['reviews'])
+      reviews: reviewsList
     );
   }
 
@@ -62,4 +69,30 @@ class ColorModel extends Equatable{
 
   @override
   List<Object> get props => [colorName, colorCode];
+}
+
+class ReviewModel extends Equatable {
+  final String id;
+  final String variant;
+  final int rating;
+  final String comment;
+
+  const ReviewModel({
+    required this.id,
+    required this.variant,
+    required this.rating,
+    required this.comment,
+  });
+
+  factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    return ReviewModel(
+      id: json['_id'],
+      variant: json['variant'],
+      rating: json['rating'],
+      comment: json['comment'] ?? ""
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, variant, rating, comment];
 }

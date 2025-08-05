@@ -3,7 +3,9 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
 
 class ProductImageCarousel extends StatefulWidget {
-  const ProductImageCarousel({super.key});
+  final List<String> images;
+
+  const ProductImageCarousel({super.key, required this.images});
 
   @override
   State<ProductImageCarousel> createState() => _ProductImageCarouselState();
@@ -14,14 +16,6 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
   final _thumbnailController = ScrollController();
   int _currentImageIndex = 0;
 
-  final List<String> _images = [
-    'assets/image/16_pro.png',
-    'assets/image/16_pro.png',
-    'assets/image/16_pro.png',
-    'assets/image/16_pro.png',
-    'assets/image/16_pro.png',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,16 +24,16 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
           height: 300,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: _images.length,
+            itemCount: widget.images.length,
             onPageChanged:
                 (index) => setState(() => _currentImageIndex = index),
-            itemBuilder: (_, index) => Image.asset(_images[index]),
+            itemBuilder: (_, index) => Image.network(widget.images[index]),
           ),
         ),
         const SizedBox(height: 16),
         SmoothPageIndicator(
           controller: _pageController,
-          count: _images.length,
+          count: widget.images.length,
           effect: WormEffect(
             dotHeight: 8,
             dotWidth: 8,
@@ -54,7 +48,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
           child: ListView.builder(
             controller: _thumbnailController,
             scrollDirection: Axis.horizontal,
-            itemCount: _images.length,
+            itemCount: widget.images.length,
             itemBuilder: (context, index) {
               final isSelected = _currentImageIndex == index;
               return GestureDetector(
@@ -77,7 +71,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
                       width: isSelected ? 2 : 1,
                     ),
                   ),
-                  child: Image.asset(_images[index]),
+                  child: Image.network(widget.images[index]),
                 ),
               );
             },

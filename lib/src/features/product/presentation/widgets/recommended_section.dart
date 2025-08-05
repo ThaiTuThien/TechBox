@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
+import 'package:techbox/src/features/product/domain/models/product_model.dart';
 import 'package:techbox/src/features/product/presentation/controllers/product_controller.dart';
 import 'package:techbox/src/features/product/presentation/states/product_state.dart';
 import 'package:techbox/src/features/product/presentation/widgets/product_card.dart';
+import 'package:techbox/src/features/product/presentation/widgets/product_detail_screen.dart';
 
 class RecommendedSection extends ConsumerStatefulWidget  {
   const RecommendedSection({super.key});
@@ -87,7 +89,13 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
           
           return ProductCard(
             product: product,
-            variant: firstVariant
+            variant: firstVariant,
+            onTap: () async {
+              await Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailScreen(slug: firstVariant.slug)));
+              print(firstVariant.slug);
+              ref.read(productControllerProvider.notifier).getAllProduct();
+            },
+            
           );
         },
       );
