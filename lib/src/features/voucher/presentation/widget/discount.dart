@@ -54,7 +54,7 @@ class _DiscountPageState extends ConsumerState<DiscountPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(pointControllerProvider.notifier).fetchPoints();
-      ref.read(voucherListControllerProvider.notifier).fetchVouchers();
+      ref.read(voucherControllerProvider.notifier).getVouchers();
     });
   }
 
@@ -102,14 +102,14 @@ class _DiscountPageState extends ConsumerState<DiscountPage> {
                   );
                   try {
                     await ref
-                        .read(voucherListControllerProvider.notifier)
-                        .exchangePoints(voucherToExchange.requiredPoint);
+                        .read(voucherControllerProvider.notifier)
+                        .exchangePointsForVoucher(voucherToExchange.requiredPoint);
                     await ref
                         .read(pointControllerProvider.notifier)
                         .refreshPoints();
                     await ref
-                        .read(voucherListControllerProvider.notifier)
-                        .refreshData();
+                        .read(voucherControllerProvider.notifier)
+                        .getVouchers();
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

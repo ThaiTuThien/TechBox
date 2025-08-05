@@ -23,8 +23,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -43,7 +42,12 @@ class ProductItem extends StatelessWidget {
               child: Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Icon(Icons.phone_iphone, size: 40, color: Colors.grey),
+                errorBuilder:
+                    (context, error, stackTrace) => const Icon(
+                      Icons.phone_iphone,
+                      size: 40,
+                      color: Colors.grey,
+                    ),
               ),
             ),
           ),
@@ -68,7 +72,7 @@ class ProductItem extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.primary,
-                        fontWeight: FontWeight.w500
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(width: 15),
@@ -130,33 +134,3 @@ class ProductItem extends StatelessWidget {
     );
   }
 }
-
-// Mock data cho ProductItem
-const String mockImageUrl = 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/wysiwyg/Phone/Apple/iPhone-16/iphone-16-pro-max-2_1.jpg';
-
-final List<ProductItem> mockProductItems = [
-  ProductItem(
-    productName: 'iPhone 16 Pro Max 256GB',
-    productColor: 'Navy',
-    colorValue: Color(0xFF1E3A8A),
-    price: 32000000,
-    quantity: 1,
-    imageUrl: mockImageUrl,
-  ),
-  ProductItem(
-    productName: 'iPhone 16 Pro Max 512GB',
-    productColor: 'Đen',
-    colorValue: Color(0xFF222222),
-    price: 37000000,
-    quantity: 2,
-    imageUrl: mockImageUrl,
-  ),
-  ProductItem(
-    productName: 'iPhone 16 Pro Max 1TB',
-    productColor: 'Trắng',
-    colorValue: Color(0xFFFFFFFF),
-    price: 42000000,
-    quantity: 1,
-    imageUrl: mockImageUrl,
-  ),
-]; 

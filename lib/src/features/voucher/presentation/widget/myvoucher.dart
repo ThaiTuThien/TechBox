@@ -4,14 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
 import 'package:techbox/src/features/voucher/domain/voucher_model.dart';
 import 'package:techbox/src/features/voucher/presentation/controller/voucher_controller.dart';
-import 'package:techbox/src/features/voucher/presentation/state/voucher_list_state.dart';
+import 'package:techbox/src/features/voucher/presentation/state/voucher_state.dart';
 
 class MyVoucherPage extends ConsumerWidget {
-  const MyVoucherPage({super.key});
+  final Function(VoucherModel)? onVoucherSelected;
+  
+  const MyVoucherPage({
+    super.key,
+    this.onVoucherSelected,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final voucherState = ref.watch(voucherListControllerProvider);
+    final voucherState = ref.watch(voucherControllerProvider);
 
     return Scaffold(
       appBar: AppBarComponent(
@@ -23,11 +28,11 @@ class MyVoucherPage extends ConsumerWidget {
       backgroundColor: Colors.white,
 
       body: switch (voucherState) {
-        VoucherListLoading() || VoucherListInitial() => const Center(
+        VoucherLoading() || VoucherInitial() => const Center(
           child: CircularProgressIndicator(),
         ),
 
-        VoucherListError(message: final msg) => Center(
+        VoucherError(message: final msg) => Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
@@ -38,7 +43,7 @@ class MyVoucherPage extends ConsumerWidget {
           ),
         ),
 
-        VoucherListSuccess(vouchers: final vouchers) =>
+        VoucherSuccess(vouchers: final vouchers) =>
           vouchers.isEmpty
               ? const Center(
                 child: Column(
@@ -58,9 +63,15 @@ class MyVoucherPage extends ConsumerWidget {
                 itemCount: vouchers.length,
                 itemBuilder: (context, index) {
                   final voucher = vouchers[index];
-                  return _VoucherItemCard(voucher: voucher);
+                  return _VoucherItemCard(
+                    voucher: voucher,
+                    onVoucherSelected: onVoucherSelected,
+                  );
                 },
               ),
+        _ => const Center(
+          child: CircularProgressIndicator(),
+        ),
       },
     );
   }
@@ -68,7 +79,12 @@ class MyVoucherPage extends ConsumerWidget {
 
 class _VoucherItemCard extends StatelessWidget {
   final VoucherModel voucher;
-  const _VoucherItemCard({required this.voucher});
+  final Function(VoucherModel)? onVoucherSelected;
+  
+  const _VoucherItemCard({
+    required this.voucher,
+    this.onVoucherSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -132,11 +148,12 @@ class _VoucherItemCard extends StatelessWidget {
                     style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                   ),
                   const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 4,
                     children: [
                       Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
                             Icons.check_circle,
@@ -154,6 +171,39 @@ class _VoucherItemCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (isActive && onVoucherSelected != null)
+                        OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide.none,
+                            backgroundColor: Colors.blue.shade50,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            minimumSize: const Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          icon: Icon(
+                            Icons.check,
+                            size: 16,
+                            color: Colors.blue.shade700,
+                          ),
+                          label: const Text(
+                            "Chọn",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                          ),
+                          onPressed: () {
+                            onVoucherSelected!(voucher);
+                            Navigator.pop(context);
+                          },
+                        ),
                       OutlinedButton.icon(
                         style: OutlinedButton.styleFrom(
                           side: BorderSide.none,
@@ -162,15 +212,15 @@ class _VoucherItemCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
+                            horizontal: 12,
+                            vertical: 6,
                           ),
                           minimumSize: const Size(0, 0),
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         icon: Icon(
                           Icons.copy,
-                          size: 18,
+                          size: 16,
                           color: Colors.grey.shade700,
                         ),
                         label: const Text(
@@ -178,7 +228,7 @@ class _VoucherItemCard extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.w400,
-                            fontSize: 13.5,
+                            fontSize: 12,
                           ),
                         ),
                         onPressed: () {
@@ -200,4 +250,4 @@ class _VoucherItemCard extends StatelessWidget {
       ),
     );
   }
-}
+} 

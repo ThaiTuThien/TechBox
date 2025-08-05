@@ -23,12 +23,6 @@ class AccountPage extends StatelessWidget {
       'route': 'profile',
     },
     {
-      'icon': Icons.location_on_outlined,
-      'title': 'Địa Chỉ',
-      'color': 0xFF3C5A5D,
-      'route': 'address',
-    },
-    {
       'icon': Icons.shopping_bag_outlined,
       'title': 'Đơn hàng của tôi',
       'color': 0xFF3C5A5D,
@@ -58,7 +52,11 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const AppBarComponent(title: 'Tài Khoản', showBackButton: false, showBottomBorder: false),
+      appBar: const AppBarComponent(
+        title: 'Tài Khoản',
+        showBackButton: false,
+        showBottomBorder: false,
+      ),
       body: SafeArea(
         child: ListView.separated(
           itemCount: menuItems.length + 1,
@@ -182,7 +180,9 @@ class AccountPage extends StatelessWidget {
       case 'vouchers':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MyVoucherPage()),
+          MaterialPageRoute(
+            builder: (context) => const MyVoucherPage(onVoucherSelected: null),
+          ),
         );
         break;
 
@@ -191,7 +191,6 @@ class AccountPage extends StatelessWidget {
         break;
 
       default:
-        // Fallback - show snackbar
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text('Đã chọn: ${item['title']}')));

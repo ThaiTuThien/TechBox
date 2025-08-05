@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/common_widgets/app_bar.dart';
 import 'package:techbox/src/features/cart/application/cart_services.dart';
+import 'package:techbox/src/features/cart/application/cart_providers.dart';
 import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
 import 'package:techbox/src/features/cart/presentation/widgets/cart_empty.dart';
 import 'package:techbox/src/features/cart/presentation/widgets/cart_product_item.dart';
@@ -39,7 +40,10 @@ class _CartPageState extends ConsumerState<CartPage> {
     await ref
         .read(cartServiceProvider)
         .updateItemQuantity(variantId, newQuantity);
-    _loadCartData();
+    await _loadCartData();
+
+    ref.invalidate(cartDataProvider);
+    ref.invalidate(cartTotalProvider);
   }
 
   Future<void> _handleDelete(String variantId, String productName) async {
@@ -48,16 +52,11 @@ class _CartPageState extends ConsumerState<CartPage> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('Đã xóa sản phẩm $productName')));
-    _loadCartData();
-  }
 
-  int calTotalPrice() {
-    if (cartProducts.isEmpty) return 0;
-    return cartProducts.fold(
-      0,
-      (total, currentItem) =>
-          total + (currentItem.price * currentItem.quantity),
-    );
+    await _loadCartData();
+
+    ref.invalidate(cartDataProvider);
+    ref.invalidate(cartTotalProvider);
   }
 
   @override
@@ -135,7 +134,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                 },
               ),
             ),
-            CartBottomSection(totalPrice: calTotalPrice()),
+            const CartBottomSection(),
           ],
         ),
       ),

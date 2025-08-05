@@ -15,12 +15,12 @@ class ShippingMethodInnitial extends ShippingMethodState {}
 class ShippingMethodLoading extends ShippingMethodState {}
 
 class ShippingMethodSuccess extends ShippingMethodState {
-  final List<ShippingMethod> methods ; 
+  final ShippingMethodResponse response ; 
 
-  const ShippingMethodSuccess(this.methods);
+  const ShippingMethodSuccess(this.response);
 
   @override
-  List<Object> get props => [methods];
+  List<Object> get props => [response];
 }
 
 class ShippingMethodError extends ShippingMethodState {
