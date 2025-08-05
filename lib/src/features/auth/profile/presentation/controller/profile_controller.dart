@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:techbox/src/features/auth/profile/application/profile_service.dart';
 import 'package:techbox/src/features/auth/profile/data/data-source/profile_data_source.dart';
 import 'package:techbox/src/features/auth/profile/data/repository/profile_repository.dart';
-import 'package:techbox/src/features/auth/profile/domain/models/profile_model.dart';
 import 'package:techbox/src/features/auth/profile/presentation/state/profile_state.dart';
 
 class ProfileController extends StateNotifier<ProfileState> {

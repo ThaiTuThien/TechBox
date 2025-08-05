@@ -24,7 +24,6 @@ class ProfileService {
     required String city,
   }) async {
     try {
-      // TRUYỀN CÁC THAM SỐ ĐÃ ĐẶT TÊN
       return await _repository.updateProfile(
         name: name,
         phoneNumber: phoneNumber,

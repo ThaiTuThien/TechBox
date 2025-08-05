@@ -267,9 +267,9 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
     List<String>? provinceNames = [];
     if (state is LocationSuccess) {
       provinceNames = state.provinces.map((p) => p.name).toList();
-      print('Province names: $provinceNames'); // Debug log
+      print('Province names: $provinceNames');
     } else {
-      print('State is not LocationSuccess: $state'); // Debug log
+      print('State is not LocationSuccess: $state');
     }
     return _buildDropdown(
       value: state is LocationSuccess ? state.selectedProvinceName : null,
@@ -277,7 +277,7 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
       items: provinceNames ?? [],
       onChanged: (value) async {
         if (value != null && state is LocationSuccess) {
-          print('Selected province: $value'); // Debug log
+          print('Selected province: $value');
           final province = state.provinces.firstWhere(
             (p) => p.name == value,
             orElse: () => state.provinces.first,
@@ -297,9 +297,9 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
     List<String>? districtNames = [];
     if (state is LocationSuccess && state.districts != null) {
       districtNames = state.districts!.map((d) => d.name).toList();
-      print('District names: $districtNames'); // Debug log
+      print('District names: $districtNames');
     } else {
-      print('State or districts is null: $state'); // Debug log
+      print('State or districts is null: $state');
     }
     return _buildDropdown(
       value: state is LocationSuccess ? state.selectedDistrictName : null,
@@ -309,7 +309,7 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
           state is LocationSuccess && state.selectedProvinceCode != null
               ? (value) async {
                 if (value != null && state.districts != null) {
-                  print('Selected district: $value'); // Debug log
+                  print('Selected district: $value');
                   final district = state.districts!.firstWhere(
                     (d) => d.name == value,
                     orElse: () => state.districts!.first,
@@ -330,19 +330,18 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
     List<String>? wardNames = [];
     if (state is LocationSuccess && state.wards != null) {
       wardNames = state.wards!.map((w) => w.name).toList();
-      print('Ward names: $wardNames'); // Debug log
+      print('Ward names: $wardNames');
     } else {
-      print('State or wards is null: $state'); // Debug log
+      print('State or wards is null: $state');
     }
     return _buildDropdown(
       value: state is LocationSuccess ? state.selectedWardName : null,
       hint: 'Chọn Phường/Xã',
-      items: wardNames ?? [],
+      items: wardNames,
       onChanged:
           state is LocationSuccess && state.selectedDistrictCode != null
               ? (value) {
                 if (value != null) {
-                  print('Selected ward: $value'); // Debug log
                   final ward = state.wards!.firstWhere(
                     (w) => w.name == value,
                     orElse: () => state.wards!.first,
@@ -429,7 +428,6 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
         '${state.selectedWardName}, '
         '${state.selectedDistrictName}, '
         '${state.selectedProvinceName}';
-    print('Địa chỉ đầy đủ sẽ được cập nhật: $fullAddress');
 
     try {
       await ref
@@ -437,7 +435,7 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
           .updateProfile(
             name: _nameController.text,
             phoneNumber: _phoneController.text,
-            street: _addressController.text, 
+            street: _addressController.text,
             ward: state.selectedWardName!,
             district: state.selectedDistrictName!,
             city: state.selectedProvinceName!,
@@ -457,7 +455,7 @@ class _UpdateAddressPageState extends ConsumerState<UpdateAddressPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: const Color.fromARGB(255, 12, 20, 21),
+        backgroundColor: ConstantsColor.colorMain,
       ),
     );
   }
