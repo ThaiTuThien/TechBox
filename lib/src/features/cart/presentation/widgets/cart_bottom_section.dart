@@ -102,11 +102,9 @@ class CartBottomSection extends ConsumerWidget {
                 IntrinsicWidth(
                   child: ElevatedButton(
                     onPressed: cartItems.isEmpty ? null : () async {
-                      // Refresh cart data trước khi chuyển trang
                       ref.refresh(cartDataProvider);
                       ref.refresh(cartTotalProvider);
                       
-                      // Đợi một chút để data được cập nhật
                       await Future.delayed(const Duration(milliseconds: 100));
                       
                       final updatedCartItems = await ref.read(cartDataProvider.future);

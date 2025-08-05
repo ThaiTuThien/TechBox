@@ -29,6 +29,7 @@ dependencies:
   syncfusion_flutter_gauges: 30.1.42
   jwt_decoder: ^2.0.1 
   flutter_html: ^3.0.0
+  webview_flutter: ^4.7.0
 
 
 dev_dependencies:
