@@ -7,8 +7,8 @@ class CartEmpty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBarComponent(title: 'Giỏ hàng', showBackButton: false),
       backgroundColor: Colors.white,
-      appBar: AppBarComponent(showBackButton: false),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

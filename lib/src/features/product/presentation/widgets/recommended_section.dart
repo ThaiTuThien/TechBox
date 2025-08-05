@@ -92,7 +92,6 @@ class _RecommendedSectionState extends ConsumerState<RecommendedSection> {
             variant: firstVariant,
             onTap: () async {
               await Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailScreen(slug: firstVariant.slug)));
-              print(firstVariant.slug);
               ref.read(productControllerProvider.notifier).getAllProduct();
             },
             

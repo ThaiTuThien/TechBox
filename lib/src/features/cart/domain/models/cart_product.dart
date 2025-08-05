@@ -1,65 +1,61 @@
-import 'package:flutter/material.dart';
+import 'package:equatable/equatable.dart';
 
-class CartProduct {
-  final String id;
-  final String name;
-  final String color;
-  final Color colorValue;
-  final int price;
-  final int quantity;
+class CartItem extends Equatable {
+  final String variantId;
+  final String productName;
   final String imageUrl;
+  final int price;
+  final String colorName;
+  final String colorCode;
+  final String storage;
+  int quantity;
 
-  const CartProduct({
-    required this.id,
-    required this.name,
-    required this.color,
-    required this.colorValue,
-    required this.price,
-    required this.quantity,
+  CartItem({
+    required this.variantId,
+    required this.productName,
     required this.imageUrl,
+    required this.price,
+    required this.colorName,
+    required this.colorCode,
+    required this.storage,
+    required this.quantity,
   });
-
-  CartProduct copyWith({
-    String? id,
-    String? name,
-    String? color,
-    Color? colorValue,
-    int? price,
-    int? quantity,
-    String? imageUrl,
-  }) {
-    return CartProduct(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      color: color ?? this.color,
-      colorValue: colorValue ?? this.colorValue,
-      price: price ?? this.price,
-      quantity: quantity ?? this.quantity,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'name': name,
-      'color': color,
-      'colorValue': colorValue.toARGB32(),
-      'price': price,
-      'quantity': quantity,
+      'variantId': variantId,
+      'productName': productName,
       'imageUrl': imageUrl,
+      'price': price,
+      'colorName': colorName,
+      'colorCode': colorCode,
+      'storage': storage,
+      'quantity': quantity,
     };
   }
 
-  factory CartProduct.fromJson(Map<String, dynamic> json) {
-    return CartProduct(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      color: json['color'] as String,
-      colorValue: Color(json['colorValue'] as int),
-      price: json['price'] as int,
-      quantity: json['quantity'] as int,
-      imageUrl: json['imageUrl'] as String,
+  factory CartItem.fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      variantId: json['variantId'] ?? '',
+      productName: json['productName'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      price: json['price'] ?? 0,
+      colorName: json['colorName'] ?? '',
+      colorCode: json['colorCode'] ?? '',
+      storage: json['storage'] ?? '',
+      quantity: json['quantity'] ?? 0,
     );
   }
-} 
+
+  @override
+  List<Object> get props => [
+    variantId,
+    productName,
+    imageUrl,
+    price,
+    colorName,
+    colorCode,
+    storage,
+    quantity,
+  ];
+}
