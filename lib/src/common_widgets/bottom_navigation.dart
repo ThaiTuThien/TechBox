@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -10,12 +11,20 @@ class BottomNavigation extends StatelessWidget {
     required this.onTabChange,
   }) : super(key: key);
 
-  static const List<IconData> _assetPaths = [
-    Icons.home,
+  static const List<dynamic> _unselectedIcons = [
+    'assets/image/home.svg',
     Icons.shopping_bag_outlined,
     Icons.favorite_outline,
     Icons.shopping_cart_outlined,
     Icons.account_circle_outlined,
+  ];
+
+  static const List<dynamic> _selectedIcons = [
+    'assets/image/home.svg',
+    Icons.shopping_bag,
+    Icons.favorite,
+    Icons.shopping_cart,
+    Icons.account_circle,
   ];
 
   @override
@@ -32,28 +41,40 @@ class BottomNavigation extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: List.generate(_assetPaths.length, (index) {
-          final isSelected = selectedIndex == index;
+        children: List.generate(_unselectedIcons.length, (index) {
+          final bool isSelected = selectedIndex == index;
+          final item =
+              isSelected ? _selectedIcons[index] : _unselectedIcons[index];
+
+          final Color iconColor =
+              isSelected ? const Color.fromARGB(255, 60, 90, 93) : Colors.white;
+
+          Widget iconWidget;
+          if (item is String && item.endsWith('.svg')) {
+            iconWidget = SvgPicture.asset(
+              item,
+              width: 24,
+              height: 24,
+              colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+            );
+          } else if (item is IconData) {
+            iconWidget = Icon(item, size: 24, color: iconColor);
+          } else {
+            iconWidget = const SizedBox.shrink();
+          }
+
           return GestureDetector(
             onTap: () => onTabChange(index),
+            behavior: HitTestBehavior.translucent,
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 300),
               width: 54,
               height: 54,
               decoration: BoxDecoration(
                 color: isSelected ? Colors.white : Colors.transparent,
                 shape: BoxShape.circle,
               ),
-              child: Center(
-                child: Icon(
-                  _assetPaths[index],
-                  size: 24,
-                  color:
-                      isSelected
-                          ? const Color.fromARGB(255, 60, 90, 93)
-                          : Colors.white,
-                ),
-              ),
+              child: Center(child: iconWidget),
             ),
           );
         }),

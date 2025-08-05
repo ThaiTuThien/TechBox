@@ -178,7 +178,7 @@ class _ProductCardState extends State<ProductCard> {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black,
-                            blurRadius: 8,
+                            blurRadius: 2,
                             offset: const Offset(0, 2),
                           ),
                         ],

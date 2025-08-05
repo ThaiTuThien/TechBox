@@ -19,12 +19,21 @@ class ProductFavoriteListPage extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 0.6,
-        crossAxisSpacing: 16, 
+        crossAxisSpacing: 16,
         mainAxisSpacing: 16,
       ),
       itemBuilder: (context, index) {
         final product = favoriteProducts[index];
-        return ProductCard(product: product);
+        return Product(
+          name: product.name,
+          colorName: product.colorName,
+          colorHex: product.colorHex,
+          storage: product.storage,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          rating: product.rating,
+          reviews: product.reviews,
+        );
       },
     );
   }

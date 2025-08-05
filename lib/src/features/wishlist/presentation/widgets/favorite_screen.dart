@@ -17,17 +17,19 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     'iPhone': [
       Product(
         name: "iPhone 16 Pro Max",
-        color: "Đen",
+        colorName: "Đen",
+        colorHex: "4C4B49",
         storage: "256 GB",
-        price: 28990000, 
+        price: 28990000,
         imageUrl:
-            "https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/article/Apple-iPhone-16-Pro-hero-240909_inline.jpg.large.jpg",
+            "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/wysiwyg/Phone/Apple/iPhone-16/iphone-16-pro-max-2_1.jpg",
         rating: 4,
         reviews: 1,
       ),
       Product(
         name: "iPhone 16 Pro",
-        color: "Đen",
+        colorName: "Đen",
+        colorHex: "4C4B49",
         storage: "128 GB",
         price: 18990000,
         imageUrl:
