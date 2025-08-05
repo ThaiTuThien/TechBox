@@ -3,7 +3,8 @@ import 'package:techbox/src/common_widgets/app_bar.dart';
 import 'package:techbox/src/common_widgets/success_notification.dart';
 import 'package:techbox/src/features/auth/login/presentation/widgets/login_screen.dart';
 import 'package:techbox/src/features/auth/profile/presentation/widget/profile.dart';
-import 'package:techbox/src/features/voucher/presentation/widget/voucher_screen.dart';
+import 'package:techbox/src/features/voucher/presentation/widget/discount.dart';
+import 'package:techbox/src/features/voucher/presentation/widget/myvoucher.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -172,13 +173,16 @@ class AccountPage extends StatelessWidget {
         break;
 
       case 'gift_cards':
-        Navigator.push;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DiscountPage()),
+        );
         break;
 
       case 'vouchers':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const VoucherScreen()),
+          MaterialPageRoute(builder: (context) => const MyVoucherPage()),
         );
         break;
 
