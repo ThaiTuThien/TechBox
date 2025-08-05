@@ -1,25 +1,21 @@
 import 'package:equatable/equatable.dart';
 
-class ProvinceDto extends Equatable {
+class Province extends Equatable {
   final int code;
   final String name;
-  final List<DistrictDto> districts;
+  final List<dynamic> districts;
 
-  const ProvinceDto({
+  const Province({
     required this.code,
     required this.name,
     required this.districts,
   });
 
-  factory ProvinceDto.fromJson(Map<String, dynamic> json) {
-    final districtsList =
-        (json['districts'] as List? ?? [])
-            .map((e) => DistrictDto.fromJson(e as Map<String, dynamic>))
-            .toList();
-    return ProvinceDto(
+  factory Province.fromJson(Map<String, dynamic> json) {
+    return Province(
       code: json['code'] as int,
       name: json['name'] as String,
-      districts: districtsList,
+      districts: json['districts'] as List<dynamic>,
     );
   }
 
@@ -27,26 +23,18 @@ class ProvinceDto extends Equatable {
   List<Object?> get props => [code, name, districts];
 }
 
-class DistrictDto extends Equatable {
+class District extends Equatable {
   final int code;
   final String name;
-  final List<WardDto> wards;
+  final List<dynamic> wards;
 
-  const DistrictDto({
-    required this.code,
-    required this.name,
-    required this.wards,
-  });
+  const District({required this.code, required this.name, required this.wards});
 
-  factory DistrictDto.fromJson(Map<String, dynamic> json) {
-    final wardsList =
-        (json['wards'] as List? ?? [])
-            .map((e) => WardDto.fromJson(e as Map<String, dynamic>))
-            .toList();
-    return DistrictDto(
+  factory District.fromJson(Map<String, dynamic> json) {
+    return District(
       code: json['code'] as int,
       name: json['name'] as String,
-      wards: wardsList,
+      wards: json['wards'] as List<dynamic>,
     );
   }
 
@@ -54,14 +42,14 @@ class DistrictDto extends Equatable {
   List<Object?> get props => [code, name, wards];
 }
 
-class WardDto extends Equatable {
+class Ward extends Equatable {
   final int code;
   final String name;
 
-  const WardDto({required this.code, required this.name});
+  const Ward({required this.code, required this.name});
 
-  factory WardDto.fromJson(Map<String, dynamic> json) {
-    return WardDto(code: json['code'] as int, name: json['name'] as String);
+  factory Ward.fromJson(Map<String, dynamic> json) {
+    return Ward(code: json['code'] as int, name: json['name'] as String);
   }
 
   @override

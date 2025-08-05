@@ -12,64 +12,53 @@ class ProfileController extends StateNotifier<ProfileState> {
 
   Future<void> fetchProfile() async {
     state = ProfileLoading();
-    print('Fetching profile started...');
     try {
       final result = await _service.getProfile();
       result.fold(
         (failure) {
-          print('Fetch profile failed: $failure');
-          state = ProfileError(failure); // Xử lý lỗi với String
+          state = ProfileError(failure);
         },
         (success) {
-          print('Fetch profile success: $success');
-          state = ProfileSuccess(success); // Xử lý ProfileModel
+          state = ProfileSuccess(success);
         },
       );
-    } catch (e, stackTrace) {
-      print('Unexpected error in fetchProfile: $e\nStackTrace: $stackTrace');
+    } catch (e) {
       state = ProfileError(e.toString());
     }
   }
 
-  Future<void> updateProfile(String name, String phoneNumber, String address) async {
-    state = ProfileLoading();
-    print('Updating profile started...');
+  Future<void> updateProfile({
+    required String name,
+    required String phoneNumber,
+    required String street,
+    required String ward,
+    required String district,
+    required String city,
+  }) async {
     try {
-      final result = await _service.updateProfile(name, phoneNumber, address);
-      result.fold(
-        (failure) {
-          print('Update profile failed: $failure');
-          state = ProfileError(failure);
-        },
-        (success) {
-          print('Update profile success');
-          fetchProfile(); // Reload profile
-          state = ProfileSuccess(ProfileModel(
-            id: '',
-            name: name,
-            email: '',
-            phoneNumber: phoneNumber,
-            address: Address(
-              street: address.split(',')[0].trim(),
-              ward: address.split(',').length > 1 ? address.split(',')[1].trim() : '',
-              district: address.split(',').length > 2 ? address.split(',')[2].trim() : '',
-              city: address.split(',').length > 3 ? address.split(',')[3].trim() : '',
-              country: '',
-            ),
-            role: '',
-          ));
-        },
+      final result = await _service.updateProfile(
+        name: name,
+        phoneNumber: phoneNumber,
+        street: street,
+        ward: ward,
+        district: district,
+        city: city,
       );
-    } catch (e, stackTrace) {
-      print('Unexpected error in updateProfile: $e\nStackTrace: $stackTrace');
-      state = ProfileError(e.toString());
+
+      await result.fold(
+        (failure) async => throw Exception(failure),
+        (success) async => await fetchProfile(),
+      );
+    } catch (e) {
+      rethrow;
     }
   }
 }
 
-final profileControllerProvider = StateNotifierProvider<ProfileController, ProfileState>((ref) {
-  final dataSource = ProfileDataSource();
-  final repository = ProfileRepository(dataSource);
-  final service = ProfileService(repository);
-  return ProfileController(service);
-});
+final profileControllerProvider =
+    StateNotifierProvider<ProfileController, ProfileState>((ref) {
+      final dataSource = ProfileDataSource();
+      final repository = ProfileRepository(dataSource);
+      final service = ProfileService(repository);
+      return ProfileController(service);
+    });

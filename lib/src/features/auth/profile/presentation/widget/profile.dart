@@ -32,11 +32,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         showBackButton: true,
         showBottomBorder: true,
       ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width > 600 ? 32.0 : 16.0,
+              vertical: 16.0,
+            ),
             child: _buildBody(state),
           ),
         ),
@@ -46,10 +49,52 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildBody(ProfileState state) {
     if (state is ProfileLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: const Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 3,
+            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3B82F6)),
+          ),
+        ),
+      );
     }
     if (state is ProfileError) {
-      return Center(child: Text('Lỗi: ${state.message}'));
+      return Container(
+        height: MediaQuery.of(context).size.height * 0.6,
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              spreadRadius: 0,
+              blurRadius: 20,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, size: 48, color: Colors.red[400]),
+              const SizedBox(height: 16),
+              Text(
+                'Lỗi: ${state.message}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.red[600],
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
     }
     if (state is ProfileSuccess) {
       return Column(
@@ -61,8 +106,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           _buildPersonalInfoSection(state.response),
           const SizedBox(height: 24),
           _buildAddressSection(state.response),
-          const SizedBox(height: 60),
-          _buildEditButton(context),
+          const SizedBox(height: 90),
+          _buildEditButton(context, state),
           const SizedBox(height: 16),
         ],
       );
@@ -72,15 +117,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   Widget _buildUserProfileCard(ProfileModel profile) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 6,
+            color: Colors.black.withOpacity(0.08),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 8,
             offset: const Offset(0, 2),
           ),
         ],
@@ -104,9 +155,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Container(
       width: 60,
       height: 60,
-      decoration: const BoxDecoration(
-        color: Colors.blue,
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF3B82F6), Color(0xFF1D4ED8)],
+        ),
         shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF3B82F6).withOpacity(0.3),
+            spreadRadius: 0,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Center(
         child: Text(
@@ -153,43 +216,85 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Widget _buildPersonalInfoSection(ProfileModel profile) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle('Thông tin cá nhân'),
-        const SizedBox(height: 16),
-        _buildInfoRow(
-          'Họ và tên',
-          profile.name,
-          'Số điện thoại',
-          profile.phoneNumber,
-        ),
-        const SizedBox(height: 16),
-        _buildInfoRow('Email', profile.email, '', ''),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Thông tin cá nhân'),
+          const SizedBox(height: 20),
+          _buildInfoRow(
+            'Họ và tên',
+            profile.name,
+            'Số điện thoại',
+            profile.phoneNumber,
+          ),
+          const SizedBox(height: 16),
+          _buildInfoRow('Email', profile.email, '', ''),
+        ],
+      ),
     );
   }
 
   Widget _buildAddressSection(ProfileModel profile) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle('Địa chỉ'),
-        const SizedBox(height: 16),
-        _buildInfoRow(
-          'Số nhà/Tên đường',
-          profile.address.street,
-          'Phường/Xã',
-          profile.address.ward,
-        ),
-        const SizedBox(height: 16),
-        _buildInfoRow(
-          'Quận/Huyện',
-          profile.address.district,
-          'Tỉnh/Thành phố',
-          profile.address.city,
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            spreadRadius: 0,
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            spreadRadius: 0,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle('Địa chỉ'),
+          const SizedBox(height: 20),
+          _buildInfoRow(
+            'Số nhà/Tên đường',
+            profile.address.street,
+            'Phường/Xã',
+            profile.address.ward,
+          ),
+          const SizedBox(height: 16),
+          _buildInfoRow(
+            'Quận/Huyện',
+            profile.address.district,
+            'Tỉnh/Thành phố',
+            profile.address.city,
+          ),
+        ],
+      ),
     );
   }
 
@@ -210,50 +315,83 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     String label2,
     String value2,
   ) {
-    return Row(
-      children: [
-        Expanded(child: _buildInfoItem(label1, value1)),
-        if (label2.isNotEmpty) ...[
-          const SizedBox(width: 16),
-          Expanded(child: _buildInfoItem(label2, value2)),
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: _buildInfoItem(label1, value1)),
+          if (label2.isNotEmpty) ...[
+            const SizedBox(width: 16),
+            Expanded(child: _buildInfoItem(label2, value2)),
+          ],
         ],
-      ],
+      ),
     );
   }
 
   Widget _buildInfoItem(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-            fontWeight: FontWeight.w500,
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          value.isEmpty ? 'Chưa cập nhật' : value,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            constraints: const BoxConstraints(minHeight: 24),
+            child: Text(
+              value.isEmpty ? 'Chưa cập nhật' : value,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+                height: 1.2,
+              ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildEditButton(BuildContext context) {
-    return SizedBox(
+  Widget _buildEditButton(BuildContext context, ProfileState state) {
+    return Container(
       width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: ConstantsColor.colorMain.withOpacity(0.3),
+            spreadRadius: 0,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: ElevatedButton(
         onPressed: () async {
-          final result = await Navigator.push;
-          if (result == true) {
-            ref.read(profileControllerProvider.notifier).fetchProfile();
+          if (state is ProfileSuccess) {
+            final result = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => UpdateAddressPage(profile: state.response),
+              ),
+            );
+            if (result == true) {
+              ref.read(profileControllerProvider.notifier).fetchProfile();
+            }
           }
         },
         style: ElevatedButton.styleFrom(
@@ -261,7 +399,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          elevation: 2,
+          elevation: 0,
+          shadowColor: Colors.transparent,
         ),
         child: const Text(
           'Chỉnh sửa thông tin',

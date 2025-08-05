@@ -36,14 +36,16 @@ class ProfileDataSource {
     }
   }
 
-  Future<void> updateProfile(
-    String name,
-    String phoneNumber,
-    String address,
-  ) async {
+  Future<void> updateProfile({
+    required String name,
+    required String phoneNumber,
+    required String street,
+    required String ward,
+    required String district,
+    required String city,
+  }) async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('accessToken');
-
     if (token == null) {
       throw Exception('Token is null');
     }
@@ -57,12 +59,25 @@ class ProfileDataSource {
       body: jsonEncode({
         'name': name,
         'phoneNumber': phoneNumber,
-        'address': address,
+        'address': {
+          'street': street,
+          'ward': ward,
+          'district': district,
+          'city': city,
+        },
       }),
     );
+    print(
+      'Update Profile Status Code: ${response.statusCode}',
+    ); // Thêm log để gỡ lỗi
+    print(
+      'Update Profile Response Body: ${response.body}',
+    ); // Thêm log để gỡ lỗi
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to update profile: ${response.body}');
+      throw Exception(
+        'Failed to update profile: ${response.statusCode} - ${response.body}',
+      );
     }
   }
 }
