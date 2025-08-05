@@ -17,6 +17,15 @@ class ProductControllers extends StateNotifier<ProductState>{
       (res) => state = ProductSuccess(res)
     );
   }
+
+  Future<void> getProductBySlug(String slug) async {
+    state = ProductLoading();
+    final data = await _services.getProductBySlug(slug);
+    data.fold(
+      (err) => state = ProductError(err), 
+      (res) => state = ProductSlugSuccess(res)
+    );
+  }
 }
 
 final productControllerProvider = StateNotifierProvider<ProductControllers, ProductState>((ref) {

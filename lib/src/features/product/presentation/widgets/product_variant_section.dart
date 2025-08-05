@@ -1,27 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
-
-const Map<String, Color> colorOptions = {
-  'Starlight': Color(0xFFF0EAE0),
-  'Green': Color(0xFF3B4A3F),
-  'Black': Colors.black,
-  'Purple': Colors.purple,
-};
+import 'package:techbox/src/features/product/domain/models/product_variant_model.dart';
+import 'package:techbox/src/utils/color_formatted.dart';
 
 class ProductVariantSection extends StatefulWidget {
-  const ProductVariantSection({super.key});
+  final List<ProductVariantModel> variants;
+  final ProductVariantModel currentVariant;
+  final ValueChanged<ProductVariantModel> onVariantSelected;
+
+  const ProductVariantSection({
+    super.key,
+    required this.variants,
+    required this.currentVariant,
+    required this.onVariantSelected,
+  });
 
   @override
   State<ProductVariantSection> createState() => _ProductVariantSectionState();
 }
 
 class _ProductVariantSectionState extends State<ProductVariantSection> {
-  final List<String> _capacities = ['64GB', '128GB', '256GB', '512GB'];
-  String _selectedCapacity = '64GB';
+  late List<String> _uniqueStorages;
+  late List<ColorModel> _uniqueColors;
 
-  final List<String> _colorNames = colorOptions.keys.toList();
-  final List<Color> _colors = colorOptions.values.toList();
-  String _selectedColorName = 'Green';
+  @override
+  void initState() {
+    super.initState();
+    _processVariants();
+  }
+
+  @override
+  void didUpdateWidget(covariant ProductVariantSection oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.variants != oldWidget.variants) {
+      _processVariants();
+    }
+  }
+
+  void _processVariants() {
+    _uniqueStorages = widget.variants.map((v) => v.storage).toSet().toList();
+
+    final colorMap = <String, ColorModel>{};
+    for (var variant in widget.variants) {
+      colorMap[variant.color.colorName] = variant.color;
+    }
+    _uniqueColors = colorMap.values.toList();
+  }
+
+  void _onSelectionChanged(String? newStorage, String? newColorName) {
+    final selectedStorage = newStorage ?? widget.currentVariant.storage;
+    final selectedColorName =
+        newColorName ?? widget.currentVariant.color.colorName;
+
+    try {
+      final newVariant = widget.variants.firstWhere(
+        (v) =>
+            v.storage == selectedStorage &&
+            v.color.colorName == selectedColorName,
+      );
+      widget.onVariantSelected(newVariant);
+    } catch (e) {
+      print("Không tìm thấy biến thể cho sự kết hợp này.");
+    }
+  }
 
   Widget _buildSectionTitle(String title) {
     return Padding(
@@ -47,16 +88,15 @@ class _ProductVariantSectionState extends State<ProductVariantSection> {
           spacing: 12.0,
           runSpacing: 10.0,
           children:
-              _capacities.map((capacity) {
-                final bool isSelected = _selectedCapacity == capacity;
+              _uniqueStorages.map((capacity) {
+                final bool isSelected =
+                    widget.currentVariant.storage == capacity;
                 return ChoiceChip(
                   label: Text(capacity),
                   selected: isSelected,
                   onSelected: (selected) {
                     if (selected) {
-                      setState(() {
-                        _selectedCapacity = capacity;
-                      });
+                      _onSelectionChanged(capacity, null);
                     }
                   },
                   showCheckmark: false,
@@ -85,33 +125,50 @@ class _ProductVariantSectionState extends State<ProductVariantSection> {
         ),
 
         const SizedBox(height: 24),
-        _buildSectionTitle("Màu sắc: $_selectedColorName"),
+        _buildSectionTitle("Màu sắc: ${widget.currentVariant.color.colorName}"),
         Wrap(
           spacing: 16.0,
           runSpacing: 10.0,
-          children: List.generate(_colors.length, (index) {
-            final color = _colors[index];
-            final colorName = _colorNames[index];
-            final isSelected = _selectedColorName == colorName;
-
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedColorName = colorName;
-                });
-              },
-              child: CircleAvatar(
-                radius: 20,
-                backgroundColor:
-                    isSelected ? AppColors.primary : Colors.transparent,
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(radius: 15, backgroundColor: color),
-                ),
-              ),
-            );
-          }),
+          //...
+          children:
+              _uniqueColors.map((colorModel) {
+                final isSelected =
+                    widget.currentVariant.color.colorName ==
+                    colorModel.colorName;
+                return Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        // Độ lan của bóng
+                        spreadRadius: 1,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      _onSelectionChanged(null, colorModel.colorName);
+                    },
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor:
+                          isSelected ? AppColors.primary : Colors.transparent,
+                      child: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: colorFromHex(colorModel.colorCode),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+          //...toList(),
         ),
       ],
     );
