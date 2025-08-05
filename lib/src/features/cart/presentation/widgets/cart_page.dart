@@ -91,7 +91,6 @@ class _CartPageState extends ConsumerState<CartPage> {
                     onDismissed: (direction) {
                       _handleDelete(product.variantId, product.productName);
                     },
-                    // Background khi vuốt
                     background: Container(
                       color: Colors.red,
                       alignment: Alignment.centerRight,

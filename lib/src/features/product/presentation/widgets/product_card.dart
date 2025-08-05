@@ -7,6 +7,8 @@ import 'package:techbox/src/features/cart/domain/models/cart_product.dart';
 import 'dart:async';
 import 'package:techbox/src/features/product/domain/models/product_model.dart';
 import 'package:techbox/src/features/product/domain/models/product_variant_model.dart';
+import 'package:techbox/src/features/wishlist/application/wishlist_service.dart';
+import 'package:techbox/src/features/wishlist/domain/wishlist_model.dart';
 import 'package:techbox/src/utils/color_formatted.dart';
 import 'package:techbox/src/utils/currency_formatted.dart';
 
@@ -36,6 +38,23 @@ class _ProductCardState extends ConsumerState<ProductCard> {
     Future.delayed(const Duration(milliseconds: 100), () {
         if (mounted) setState(() => _cartScale = 1.0);
     });
+  }
+
+   Future<void> _handleAddToWishlist() async {
+    _animateFav();    
+    final newItem = WishlistModel(
+      variantId: widget.variant.id,
+      productName: widget.product.name,
+      imageUrl: widget.variant.images.isNotEmpty ? widget.variant.images.first : '',
+      price: widget.variant.price,
+      colorName: widget.variant.color.colorName,
+      colorCode: widget.variant.color.colorCode,
+      storage: widget.variant.storage,
+      slug: widget.variant.slug, 
+    );
+    await ref.read(wishListServiceProvider).addWishList(newItem);
+    NotificationComponent(title: 'Thành công', description: 'Đã thêm vào danh sách yêu thích', type: 'success').build(context);
+
   }
 
   Future<void> _handleAddToCart() async {
@@ -104,7 +123,7 @@ class _ProductCardState extends ConsumerState<ProductCard> {
                     top: 8,
                     right: 8,
                     child: GestureDetector(
-                      onTap: _animateFav,
+                      onTap: _handleAddToWishlist,
                       child: AnimatedScale(
                         scale: _favScale,
                         duration: const Duration(milliseconds: 120),

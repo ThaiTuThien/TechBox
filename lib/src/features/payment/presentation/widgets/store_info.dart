@@ -74,7 +74,7 @@ class StoreInfo extends StatelessWidget {
                       fontSize: 12,
                       color: Colors.grey,
                     ),
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

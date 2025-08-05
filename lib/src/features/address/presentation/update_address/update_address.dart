@@ -9,7 +9,7 @@ import 'package:techbox/src/features/location/presentation/states/location_state
 
 class UpdateAddressPage extends ConsumerStatefulWidget {
   final ProfileModel profile;
-  const UpdateAddressPage({Key? key, required this.profile}) : super(key: key);
+  const UpdateAddressPage({super.key, required this.profile});
 
   @override
   ConsumerState<UpdateAddressPage> createState() => _UpdateAddressPageState();
