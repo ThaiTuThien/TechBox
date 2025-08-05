@@ -57,7 +57,7 @@ class AccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const AppBarComponent(title: 'Tài Khoản', showBackButton: false),
+      appBar: const AppBarComponent(title: 'Tài Khoản', showBackButton: false, showBottomBorder: false),
       body: SafeArea(
         child: ListView.separated(
           itemCount: menuItems.length + 1,

@@ -1,39 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:techbox/src/core/theme/app_colors.dart';
-import 'package:techbox/src/features/cart/presentation/widgets/cart_quantity_controls.dart';
-import 'package:techbox/src/features/cart/presentation/widgets/cart_white_container.dart';
 import 'package:techbox/src/utils/currency_formatted.dart';
 
-class CartProductItem extends StatelessWidget {
-  final String productId;
+class ProductItem extends StatelessWidget {
   final String productName;
   final String productColor;
-  final String storage;
   final Color colorValue;
   final int price;
   final int quantity;
   final String imageUrl;
-  final ValueChanged<int> onQuantityChanged;
-  final VoidCallback onDelete;
-
-  const CartProductItem({
-    super.key,
-    required this.productId,
+  const ProductItem({
+    Key? key,
     required this.productName,
     required this.productColor,
-    required this.storage,
     required this.colorValue,
     required this.price,
     required this.quantity,
     required this.imageUrl,
-    required this.onQuantityChanged,
-    required this.onDelete,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget productItem = CartWhiteContainer(
-      hasShadow: false,
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: Row(
         children: [
           Container(
@@ -47,41 +42,8 @@ class CartProductItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
                 imageUrl,
-                width: 95,
-                height: 95,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 95,
-                    height: 95,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.phone_iphone,
-                      size: 40,
-                      color: Colors.grey,
-                    ),
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    width: 95,
-                    height: 95,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                      ),
-                    ),
-                  );
-                },
+                errorBuilder: (context, error, stackTrace) => const Icon(Icons.phone_iphone, size: 40, color: Colors.grey),
               ),
             ),
           ),
@@ -91,10 +53,10 @@ class CartProductItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  productName + " " + storage,
-                  style: TextStyle(
+                  productName,
+                  style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                     color: AppColors.primary,
                   ),
                 ),
@@ -106,7 +68,7 @@ class CartProductItem extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: AppColors.primary,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w500
                       ),
                     ),
                     const SizedBox(width: 15),
@@ -124,7 +86,6 @@ class CartProductItem extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 14,
                         color: Colors.black87,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -140,10 +101,24 @@ class CartProductItem extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                    const Spacer(),
-                    CartQuantityControls(
-                      quantity: quantity,
-                      onQuantityChanged: onQuantityChanged,
+                    const SizedBox(width: 90),
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$quantity',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -153,6 +128,35 @@ class CartProductItem extends StatelessWidget {
         ],
       ),
     );
-    return productItem;
   }
 }
+
+// Mock data cho ProductItem
+const String mockImageUrl = 'https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/wysiwyg/Phone/Apple/iPhone-16/iphone-16-pro-max-2_1.jpg';
+
+final List<ProductItem> mockProductItems = [
+  ProductItem(
+    productName: 'iPhone 16 Pro Max 256GB',
+    productColor: 'Navy',
+    colorValue: Color(0xFF1E3A8A),
+    price: 32000000,
+    quantity: 1,
+    imageUrl: mockImageUrl,
+  ),
+  ProductItem(
+    productName: 'iPhone 16 Pro Max 512GB',
+    productColor: 'Đen',
+    colorValue: Color(0xFF222222),
+    price: 37000000,
+    quantity: 2,
+    imageUrl: mockImageUrl,
+  ),
+  ProductItem(
+    productName: 'iPhone 16 Pro Max 1TB',
+    productColor: 'Trắng',
+    colorValue: Color(0xFFFFFFFF),
+    price: 42000000,
+    quantity: 1,
+    imageUrl: mockImageUrl,
+  ),
+]; 
