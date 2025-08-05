@@ -3,6 +3,7 @@ import 'package:techbox/src/common_widgets/app_bar.dart';
 import 'package:techbox/src/common_widgets/success_notification.dart';
 import 'package:techbox/src/features/auth/login/presentation/widgets/login_screen.dart';
 import 'package:techbox/src/features/auth/profile/presentation/widget/profile.dart';
+import 'package:techbox/src/features/voucher/presentation/widget/voucher_screen.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -81,11 +82,7 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
-            Icon(
-              item['icon'],
-              size: 26,
-              color: Color(item['color']),
-            ),
+            Icon(item['icon'], size: 26, color: Color(item['color'])),
             const SizedBox(width: 24),
             Expanded(
               child: Text(
@@ -116,11 +113,7 @@ class AccountPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
-            const Icon(
-              Icons.logout_outlined,
-              size: 26,
-              color: Colors.red,
-            ),
+            const Icon(Icons.logout_outlined, size: 26, color: Colors.red),
             const SizedBox(width: 24),
             const Expanded(
               child: Text(
@@ -157,46 +150,47 @@ class AccountPage extends StatelessWidget {
   // Handle Menu Item Tap - ĐÂY LÀ NƠI BẠN THÊM NAVIGATION
   void _handleMenuItemTap(BuildContext context, Map<String, dynamic> item) {
     String route = item['route'];
-    
+
     switch (route) {
       case 'notifications':
         Navigator.push;
         break;
-        
+
       case 'profile':
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => const ProfileScreen(),
-          ),
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
         );
         break;
-        
+
       case 'address':
         Navigator.push;
         break;
-        
+
       case 'orders':
         Navigator.push;
         break;
-        
+
       case 'gift_cards':
         Navigator.push;
         break;
-        
+
       case 'vouchers':
-        Navigator.push;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const VoucherScreen()),
+        );
         break;
-        
+
       case 'settings':
         Navigator.push;
         break;
-        
+
       default:
         // Fallback - show snackbar
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Đã chọn: ${item['title']}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Đã chọn: ${item['title']}')));
     }
   }
 
@@ -228,16 +222,14 @@ class AccountPage extends StatelessWidget {
     );
   }
 
- 
   void _performLogout(BuildContext context) {
-    //thêm logic logout sau nhé bạn Tấn 
-    
+    //thêm logic logout sau nhé bạn Tấn
+
     SuccessNotification.show(
       context,
       subtitleText: 'Chúc mừng bạn đã đăng xuất thành công',
       buttonText: 'Quay về trang chủ',
       navigateToPage: LoginScreen(),
     );
-  
   }
 }

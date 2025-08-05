@@ -10,7 +10,6 @@ class ProfileDataSource {
   Future<ProfileModel> getProfile() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('accessToken');
-    print(token);
     if (token == null) {
       throw Exception('Token is null');
     }
@@ -67,12 +66,6 @@ class ProfileDataSource {
         },
       }),
     );
-    print(
-      'Update Profile Status Code: ${response.statusCode}',
-    ); // Thêm log để gỡ lỗi
-    print(
-      'Update Profile Response Body: ${response.body}',
-    ); // Thêm log để gỡ lỗi
 
     if (response.statusCode != 200) {
       throw Exception(
