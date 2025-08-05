@@ -8,10 +8,23 @@ class CategoryController extends StateNotifier<CategoryState>{
   final CategoryService _service;
   CategoryController(this._service) : super(CategoryInitial());
 
-  Future<void> fetchCategories() async {
+  Future<void> fetchCategories(String categoryId) async {
     try {
       state = CategoryLoading();
-      final result = await _service.getCategories();
+      final result = await _service.getCategories(categoryId);
+      result.fold(
+        (failure) => state = CategoryError(failure.toString()),
+        (success) => state = CategorySuccess(success),
+      );
+    } catch (e){
+      state = CategoryError('Unexpected Error: $e');
+    }
+  }
+
+  Future<void> fetchCategoriesAdmin() async {
+    try {
+      state = CategoryLoading();
+      final result = await _service.getCategoriesAdmin();
       result.fold(
         (failure) => state = CategoryError(failure.toString()),
         (success) => state = CategorySuccess(success),
